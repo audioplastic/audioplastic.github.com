@@ -29,3 +29,5 @@ int main ()
 {% blockquote %}
 In vector: 12, 324, 45, 65, 787, 9, there are 2 multiples of 5
 {% endblockquote %}
+
+For some more depth on the functional goodness see this [Dr. Dobbs article](http://www.drdobbs.com/cpp/efficient-use-of-lambda-expressions-and/232500059)
