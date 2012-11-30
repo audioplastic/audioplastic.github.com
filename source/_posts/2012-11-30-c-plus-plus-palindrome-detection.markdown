@@ -26,7 +26,13 @@ bool isPalindrome(const std::string& str)
 }
 ```
 
-Seeing as this function only contains a single command, it might be nice to use a lambda as an alternative. You can specify a return type from a lambda with this syntax []()->return_type{} ...
+Seeing as this function only contains a single command, it might be nice to use a lambda as an alternative. You can specify a return type from a lambda with this syntax 
+
+{% codeblock %}
+[]()->return_type{}
+{% endcodeblock %}
+
+So defining the palindrome detector becomes a simple 1-liner.
 
 ```c++
 auto isPalindrome = [](const std::string& str)->bool{return std::equal(str.rbegin(), str.rend(), str.begin());};
