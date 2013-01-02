@@ -21,7 +21,7 @@ private:
     
 public:
     TicToc() {
-        t1 = std::chrono::high_resolution_clock::now();
+        t1 = clock::now();
     }
     
     ~TicToc()
@@ -44,5 +44,7 @@ Putting this to use is very simple. Just make a new scope using the scope resolu
     perhapsSomethingElse();
 }
 ```
+
+Furthermore, other classes can be derived from this simple class, making this a really simple way to get stats on object lifetime.
 
 Enjoy and HAPPY NEW YEAR!
