@@ -1,0 +1,122 @@
+---
+layout: post
+title: "Basic Differential Equations Tutorial"
+date: 2013-01-07 10:36
+comments: true
+categories: 
+---
+
+
+This is a brief tutorial showing how to use differential equations to do make predictions about the state of a simple dynamic analogue electronics circuit. I have ported this post over from my discontinued Wordpress blog, as some readers may find the information useful. 
+
+Put simply, a differential equation is any equation that contains derivatives. A derivative is basically a gradient, and so it is an equation that describes a system containing something that changes. In audio, this will likely be something that changes over time (t), so an example might be
+
+$$
+\begin{align}
+\mbox{} ty\frac{{d}^{2}y}{dt}+y\frac{dy}{dt}+{e}^{8t}=0
+\end{align}
+$$
+
+I looks kinda like a polynomial, but with various order derivatives. We'd call this example a second order differential equation, as the highest order derivative is 2.
+
+I quickly want to move onto a real world example, showing some useful stuff we can do with differential equations. For this, I'm going to use simple electronic components in a circuit and then try and predict the state of the circuit at a given time. I'm going to use basic analogue electronic components for my first real-world example, as digital filter theory is rooted in basic analogue electronics theory.
+
+The complex impedance ($$Z$$) of a circuit is made up of real resistive terms ($$R$$) and imaginary reactive terms ($$X$$) . . .
+
+$$ Z=R+jX $$
+
+The reactance term comes from the combination of inductance and capacitance. Like resistance, capacitance and inductance are inherent properties of electronic components. The capacitative effect comes from built up electric field that resists voltage changes. The inductive effect comes from the build up of magnetic field that resists changes in current. Reactance effects are only exhibited when circuit conditions change. Therefore, we can use differential equations to predict the state of a circuit after a change. For the following example, the change is the circuit being switched on.
+
+Consider a simple circuit containing a prefect voltage source, a resistor and an inductor . . . 
+
+<img src="http://i48.tinypic.com/2hwnea.png" alt="" width="60%" />
+
+When the circuit is switched on, the inductor chokes the initial burst of current, giving rise to a gradual increase in current through the inductor until a maximum value is reached. 
+
+One way to visualise the current flow through this circuit is to build it and measure it, but this is a bit of a faff. Another way is to use electronic simulation software. For simple circuits (and even for relatively complex ones too) I am a huge fan of the excellent and free web app, [CircuitLab](www.circuitlab.com). CircuitLab allows the user to just drag and drop various components, set their values, then produce simulation plots like that shown below.
+
+<img src="http://i45.tinypic.com/al3hgm.png" alt="" width="100%" />
+
+The plot shows that the rise in current through the inductor is not linear with time. This is because the relationship between the inductance (L), voltage (V), and current (I) is differential - it changes over time . . . 
+
+$$ V = L\frac{dI}{dt} $$
+
+We will now see if we can predict the current for any given time analytically using differential equations. We know from Kirchoff's Voltage Law that the sum total voltage drop across series components (VR and VL) equals the supply voltage (VS) ...
+
+$$ V_R + V_L = V_S $$
+
+We want to predict the current, so using Ohm's law (V=IR), we can express this in terms of current (I) ...
+
+$$ IR + L\frac{dI}{dt} = V_S $$
+
+The next thing we want to do is get this into a suitable form for integration so we can remove the differential terms (dI and dt) and find a solution. THe first step is to split dI and dt ...
+
+$$ LdI = (V_S-IR)dt $$
+
+... then separate the rest of the variables ...
+
+$$ \frac{L}{V_S-IR}dI = dt $$
+
+This is now in a suitable form for integration. 
+
+$$ \int \frac{L}{V_S-IR}dI =\int 1dt $$
+
+This is a great time to introduce a web app that I find particularly useful, [Wolfram Alpha](http://www.wolframalpha.com/). This tool can be used to perform calculus. It will show the intermediate steps towards a solution, so there is no black-box trickery to get in the way of our understanding. I have posted a screenshot of the output of the web app when asked to integrate the left-hand-side (LHS) of the above equation. It saves all the $$LaTeX$$ typing anyway!
+
+<img src="http://i48.tinypic.com/30tmi2o.png" alt="" width="100%" />
+
+Integration of the right-hand-side (RHS) is trivial, so we end up with the following . . . 
+
+$$ -\frac{L ln(V_S-IR)}{R}+c_1 = t + c_2 $$
+
+We are still trying to solve this for current, so the next step is to isolate the logarithmic term so that both sides of the equation can be easily exponentiated ...
+
+$$ ln(V_S-IR) = -\frac{R}{L}t -\frac{R}{L}(c_1+c_2) $$
+
+Now simply exp() both sides ...
+
+$$ V_S-IR = {e}^{-\frac{R}{L}t} {e}^{-\frac{R}{L}(c_1+c_2)} $$
+
+Now save a little writing by using the following alias for K, where K is some constant term ...
+
+$$ K = {e}^{-\frac{R}{L}(c_1+c_2)} $$
+
+... and so ...
+
+$$ V_S-IR = K{e}^{-\frac{R}{L}t} $$
+
+This allows us to finally get the current term by itself ...
+
+$$ I = \frac{K}{R} {e}^{-\frac{R}{L}t} - \frac{V_S}{R} $$
+
+Great! We can almost state the current at a given time after the circuit is switched on, but there are still some pesky unknown constant terms in K that would cause some uncertainty in the result. However, this is not a problem because we know the initial conditions at switch on. At time t=0, the current through the circuit I=0. Substituting this in ...
+
+$$ 0 = \frac{K}{R} {e}^{0} - \frac{V_S}{R} $$
+
+And so it follows ...
+
+$$ \frac{K}{R} = \frac{V_S}{R} $$
+
+so ...
+
+$$ K = V_S $$
+
+Now we can determine the current at any given time after switch on!
+
+$$ I = \frac{V_S}{R} (1-{e}^{-\frac{R}{L}t}) $$
+
+It is then easy to check if our analytical solution matches our hardware equivalent by making a quick Matlab script . . . 
+
+```matlab
+tAxis = 0:1e-4:5e-3; % Time Axis
+
+% We can use a Lambda to neatly represent our solution
+current = @(V,R,L,t)(V/R)*(1-exp(-t*R/L)); 
+figure; 
+plot(1000*tAxis,1000*current(9,20,10e-3,tAxis),'Linewidth',2);
+xlabel('Time [ms]'); ylabel('Current [mA]'); ylim([0 500])
+```
+
+<img src="http://i45.tinypic.com/19vvxf.png">
+
+So there we have it. I differential equation solved that allows us to predict the behaviour of a real physical system.
