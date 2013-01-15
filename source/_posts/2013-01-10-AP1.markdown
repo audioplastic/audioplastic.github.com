@@ -3,7 +3,7 @@ layout: post
 title: "Audiophile AirPlay with Raspberry Pi: Part 1"
 date: 2013-01-10 14:44
 comments: true
-published: false
+published: true
 categories: 
 ---
 
