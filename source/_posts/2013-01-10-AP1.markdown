@@ -1,0 +1,245 @@
+---
+layout: post
+title: "Audiophile AirPlay with Raspberry Pi: Part 1"
+date: 2013-01-10 14:44
+comments: true
+published: false
+categories: 
+---
+
+Very recently, I had been looking into purchasing an Apple TV for the purpose of streaming audio via AirPlay. However, I have little interest in the video side of things. I started searching for a dedicated audio solution, hoping to find a high fidelity airplay receiver. Given that AirPlay data is transmitted using a lossless codec, the potential for super-high fidelity is unlimited. 
+
+After a little searching, I found that a Raspberry Pi (RPi) could be converted into an airplay receiver. The only problem is the somewhat-less-than-perfect analogue audio output built into the RPi. The digital to analogue converter (DAC) in the RPi works using the [pulse-width modulation (PWM)](http://en.wikipedia.org/wiki/Pulse-width_modulation) principle to keep costs down. Most high fidelity audio DACs work using the [pulse-code modulation (PCM)](http://en.wikipedia.org/wiki/Pulse-code_modulation) principle, generally resulting in a more faithful representation of the digitally-encoded analogue signal.
+
+To describe PWM in a nutshell, the pulse can either be zero voltage, or maximum voltage. The with [(or duty cycle)](http://en.wikipedia.org/wiki/Duty_cycle) of the very rapid pulses is modulated such that the the desired output voltage is represented by the average voltage of the pulse train. This is then lowpass filtered to give an actual analogue voltage. The pulse rate in the RPi is fixed at 100 MHz. The bit depth of this pulse stream is 1 bit, as the pulse voltage can only be zero or on. This gives us an upper limit on the amount of information that can be transmitted by the audio output built into the RPi. To get this into more meaningful units, we can use the following formula to estimate the bit depth at the standard CD sampling rate of 44.1 kHz.
+
+$$ log_{2}\left (\frac{100 \times 10^6}{44.1 \times 10^3}  \right ) = 11.15 $$
+
+This gives us a theoretical maximum of around 11 bits at 44.1 kHz. This is absolutely fine for basic speech intelligibility when running a VIOP application, or for simple sound effects. Unfortunately, for any serious listening, at least 16-bit audio is required to get full resolution dynamic range out of CDs. Therefore an external USB audio interface is required, but thankfully, there are some great USB external interfaces available.
+
+### The Hardware
+
+I happened to have a Creative xFi HD laying around from a from a recent work project. This was useful, as I was able to use to test the airplay setup. This is certainly not the best external DAC that money can buy, but it sounds very good for its price and is more than adequate for the initial testing phase of this project.
+
+![xFi HD](http://i47.tinypic.com/wgrxjt.jpg)
+
+The assembled test rig is shown in the screenshot below. The power is supplied by the USB hub and the networking is wired for the time being. The xFi current draw is fairly low, meaning it can be powered from the RPi using a Y-cable if desired. This setup is not very visually appealing, but it is functional and this is just phase 1 (now I am confident that the setup works, I have ordered a very interesting little dedicated DAC that should suit the RPi perfectly - more to come in part 2 of this blog series). I have been testing this setup by streaming music from my mac using iTunes, through the test equipment, and then onwards to some Rogers LS7t speakers. I have been listening for hours on end over the past few days without a single audio drop or glitch. 
+
+The sound quality is great. The digital data stream to the USB interface is uninterrupted and error free, meaning sound quality is exactly as if the Mac was directly connected to the the xFi Sound interface. The rest of this blog article describes the software steps involved in getting pristine AirPlay audio through an external USB sound interface connected to the RPi.
+
+![Ugly, but does the job marvelously](http://i45.tinypic.com/rbwpk6.jpg)
+
+### Preparation
+
+Before we begin, make sure that you have the Debian Wheezy operating system installed, and that you have secure shell (SSH) access to your RPi. The instructions for doing so are beyond the scope of this tutorial, but the steps required can easily be found by searching the web. Make sure that you can log onto the RPi over the network before proceeding.
+
+The very first step is to upgrade the packages on the RPi. As root, do the following ...
+
+```
+root@raspberrypi:~# aptitude update
+root@raspberrypi:~# aptitude upgrade
+```
+
+On my system, the uname command gives the following output (so long as the output you see has the same date stamp, or is newer, then things should be OK) ...
+
+```
+pi@raspberrypi ~ $ uname -a
+Linux raspberrypi 3.6.11+ #348 PREEMPT Tue Jan 1 16:33:22 GMT 2013 armv6l GNU/Linux
+```
+
+The next step is to upgrade the RPi's firmware. As root, use the following command ...
+
+```
+root@raspberrypi:~# rpi-update
+```
+
+For me, this failed on the first run, but worked OK on the second attempt. For detailed information regarding the rpi-update command, see the associated [github repository](https://github.com/Hexxeh/rpi-update).
+
+
+### Test AirPlay using the onboard sound
+
+This section is a summary of the instructions [found here](http://trouch.com/2012/08/03/airpi-airplay-audio-with-raspberry/). The default audio output should be set to the onboard stereo jack. For this, a single command is required as root ...
+
+```
+root@raspberrypi:~# amixer cset numid=3 1
+```
+
+Before download and compilation of the shairport software (this is the software that makes the RPi mimic an authentic AirPlay device), some prerequisites need to be installed. As root, install the following packages ...
+
+```
+root@raspberrypi:~# aptitude install git libao-dev libssl-dev libcrypt-openssl-rsa-perl libio-socket-inet6-perl libwww-perl avahi-utils
+```
+
+I also needed to get the Net::SDP perl library when I tried this. This was done using the following command as root ...
+
+```
+root@raspberrypi:~# cpan install Net::SDP
+```
+
+With all the prerequisites successfully installed, the next step is to download shairport sources and compile them as root ...
+
+```
+root@raspberrypi:~# git clone https://github.com/albertz/shairport.git shairport
+root@raspberrypi:~# cd shairport
+root@raspberrypi:~/shairport# make
+```
+
+Shairport can now be tested by launching it in the foreground ...
+
+```
+root@raspberrypi:~/shairport# ./shairport.pl -a AirPi
+```
+
+... and then connecting to it using an AirPlay compatible device. The streamed data should then be audible from the 3.5 mm jack with speakers or headphones attached.
+
+
+### Getting an external USB DAC to work without pops / clicks / noise
+
+Firstly, install some prerequisites as root ...
+
+```
+root@raspberrypi:~# apt-get install libasound2-plugins
+root@raspberrypi:~# apt-get install libesd0
+root@raspberrypi:~# apt-get install nas
+```
+
+The next step is to edit /boot/cmdline.txt to fix some of the potential causes of pops when using a USB sound interface. Open /boot/cmdline.txt in the nano editor as root ...
+
+```
+root@raspberrypi:~# nano /boot/cmdline.txt
+```
+
+Add the following text to the file. I'm not sure if the position of the text makes a difference, but I appended the text to the front of the existing text. Once the text has been added, quit the nano editor using ctrl+x and save the changes by hitting return when prompted.
+
+```
+dwc_otg.speed=1 dwc_otg.fiq_fix_enable=1 
+```
+
+Using nano as in the previous step (or your favorite editor), edit /etc/libao.conf so that it contains the following ...
+
+```
+default_driver=alsa
+dev=default
+use_mmap=no
+```
+
+Edit /etc/modprobe.d/alsa-base.conf, commenting out the snd-usb-audio line and adding the snd_bcm2835 line so part of the file looks like the following ...
+
+```
+#options snd-usb-audio index=-2
+options snd_bcm2835 index=-2
+```
+
+For testing purposes, create a hidden file, .asoundrc, in the home directory of a regular user. For example, as pi ...
+
+```
+pi@raspberrypi ~ $ touch .asoundrc
+```
+
+Then edit this file to contain the following configuration data...
+
+```
+pcm.!default {
+    type plug
+    slave.pcm "softvol"
+}
+pcm.dmixer {
+       type dmix
+       ipc_key 1024
+       slave {
+           pcm "hw:0"
+           period_time 0
+           period_size 4096
+           buffer_size 131072
+           rate 44100
+       }
+       bindings {
+           0 0
+           1 1
+       }
+}
+pcm.dsnooper {
+       type dsnoop
+       ipc_key 1024
+       slave {
+           pcm "hw:0"
+           channels 2
+           period_time 0
+           period_size 4096
+           buffer_size 131072
+           rate 1
+       }
+       bindings {
+           0 0
+           1 1
+       }
+}
+pcm.softvol {
+       type softvol
+       slave { pcm "dmixer" }
+       control {
+           name "Master"
+           card 0
+       }
+}
+ctl.!default {
+    type hw
+    card 0
+}
+ctl.softvol {
+    type hw
+    card 0
+}
+ctl.dmixer {
+    type hw
+    card 0
+}
+
+```
+
+Restart the RPi before proceeding. Attach the external USB sound interface to some speakers or headphones, manually start up shairport again like in the previous example, then test it by connecting to the shairport server and streaming some music
+
+```
+root@raspberrypi:~/shairport# ./shairport.pl -a AirPi
+```
+
+If this all works OK, then make a demon process so that shairport always runs on startup or after the RPi is reset.
+
+### Running the AirPort server at startup
+
+The first task is to copy the local .asoundrc to /etc/asound.conf so that it can be found by the demon process. This tripped me up for a bit! 
+
+```
+root@raspberrypi:~# cp /home/pi/.asoundrc /etc/asound.conf
+```
+
+As root, install the shairport software, copy the default configuration, make the shairport init script executable, and then update rc.d by issuing the following commands ...
+
+```
+root@raspberrypi:~/shairport# make install
+root@raspberrypi:~/shairport# cp shairport.init.sample /etc/init.d/shairport
+root@raspberrypi:~/shairport# cd /etc/init.d
+root@raspberrypi:/etc/init.d# chmod a+x shairport
+root@raspberrypi:/etc/init.d# update-rc.d shairport defaults
+```
+
+Before starting the daemon, we have to add the AP Name in the launch parameters. Edit the file using nano shairport then change the DAEMON_ARGS variable line so it looks like the following ...
+
+```
+DAEMON_ARGS="-w $PIDFILE -a AirPi"
+```
+
+Replace AirPi with whatever you want it to appear as on your network. The demon can be started using the following ...
+
+```
+root@raspberrypi:/etc/init.d# ./shairport start
+```
+
+The AirPlay service will now start whenever the RPi is powered on.
+
+
+### Coming soon 
+
+In the next installment of this blog series, I will attempt to interface the Raspberry Pi with a [Schiit Modi](http://schiit.com/cart/index.php?main_page=product_info&cPath=0&products_id=14) dedicated USB DAC. I have one on order from the manufacturer in the USA (it is currently in the post). These are supposed to provide incredible sound quality for the price. the problem with the xFi is that it tires to do too much (optical / audio in / headphone amp). the Modi just has a USB input and a stereo line level analogue output. As an AipPlay device for use with the Raspberry Pi, no money (or size) is wasted on superfluous functionality. 
+
+In the next installment, I also intend to some controlled tests to compare the setup's sound quality to an Apple TV. I'll do this with a number of listeners. I'm excited to find out what happens!
