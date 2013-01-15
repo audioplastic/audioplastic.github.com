@@ -2,7 +2,7 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://audioplastic.github.com
+url: http://audioplastic.org
 title: AudioPlastic
 subtitle: 
 author: Nick
@@ -64,7 +64,7 @@ github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
-twitter_user:
+twitter_user: audioplastic
 twitter_tweet_count: 4
 twitter_show_replies: false
 twitter_follow_button: true
@@ -96,4 +96,4 @@ disqus_show_comment_count: true
 google_analytics_tracking_id: UA-37471615-1
 
 # Facebook Like
-facebook_like: false
+facebook_like: true
