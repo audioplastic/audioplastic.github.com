@@ -4,10 +4,10 @@
 
 url: http://audioplastic.org
 title: AudioPlastic
-subtitle: 
-author: Nick
+subtitle: A blog about audio technology
+author: Nick Clark
 simple_search: http://google.com/search
-description:
+description: This site contains information about various topics in audio, ranging from software and hardware, to mathematics
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -72,7 +72,7 @@ twitter_show_follower_count: false
 twitter_tweet_button: true
 
 # Google +1
-google_plus_one: false
+google_plus_one: true
 google_plus_one_size: medium
 
 # Google Plus Profile
