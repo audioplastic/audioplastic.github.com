@@ -11,11 +11,7 @@ This is a brief tutorial showing how to use differential equations to do make pr
 
 Put simply, a differential equation is any equation that contains derivatives. A derivative is basically a gradient, and so it is an equation that describes a system containing something that changes. In audio, this will likely be something that changes over time (t), so an example might be
 
-$$
-\begin{align}
-\mbox{} ty\frac{{d}^{2}y}{dt}+y\frac{dy}{dt}+{e}^{8t}=0
-\end{align}
-$$
+$$  ty\frac{ {d}^{2} y }{dt}+y\frac{dy}{dt}+{e}^{8t}=0  $$
 
 I looks kinda like a polynomial, but with various order derivatives. We'd call this example a second order differential equation, as the highest order derivative is 2.
 
