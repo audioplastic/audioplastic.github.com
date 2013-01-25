@@ -7,7 +7,7 @@ published: false
 categories: 
 ---
 
-Just before Christmas, I submitted a free app ([BioAid](http://itunes.com/apps/nicholasclark)) to the Apple app store that turns an iOS device into a hearing aid. It does this by taking the audio stream from the internal microphone, processing the audio in real time, and then playing the audio back over headphones connected to the device. This blog article discusses the audio processing that occurs behind the scenes. For more general information on usage, please visit the [main BioAid site](http://bioaid.org.uk). This information is placed on my blog, allowing me to communicate some of the underlying architecture quickly and informally, while I gather thoughts in preparation for a more rigorous peer-reviewed account of the algorithm.
+Just before Christmas, I submitted a free app ([BioAid](http://itunes.com/apps/nicholasclark)) to the Apple app store that turns an iOS device into a hearing aid. It does this by taking the audio stream from the internal microphone, processing the audio in real time, and then playing the audio back over headphones connected to the device. This blog article discusses the audio processing that occurs behind the scenes. For more general information on usage, please visit the [main BioAid site](http://bioaid.org.uk). This information is placed on my blog, allowing me to communicate some of the underlying architecture quickly and informally while I gather thoughts in preparation for a more rigorous and hopefully publishable account of the algorithm.
 
 | ![BioAid Screenshot](/images/BioAid_algo/Screenshot_A_web.png)  | --> Screenshot of the BioAid iOS app|
 
@@ -20,9 +20,9 @@ Generic hearing aid 'gain model'
 
 The first thing to mention here, is that modern hearing aids contain all manner of signal processing wizardry to help with general audibility of sound, and also to help alleviate some of the exhaustion associated with the increased listening effort required from impaired listeners to extract information from sounds of interest in cacophonous environments. Among others, processing strategies include components such as noise reduction algorithms, speech enhancement algorithms, microphone arrays with beam forming algorithms to reduce off-axis sound interference, and feedback cancellation algorithms to prevent howl associated with high gain settings in conjunction with open (non occluded) fittings. Some hearing aids even transpose information from different frequency bands to others, but these technologies are not related to the core BioAid processing.
 
-At the heart of any hearing aid is the 'gain model', and the BioAid algorithm falls into this category. The most basic goal of any hearing assistive device is to restore audibility of sounds that were previously inaudible to a hearing-impaired listener. Hearing impaired listeners have a reduced sensitivity to environmental sounds, i.e. they cannot detect the low level sounds that a normal hearing listener would be able to detect, and so it can be said that their thresholds of hearing are relatively high, or raised. To compensate for this deficit, the intensity of the stimulus must be increased, i.e. gain is provided by the hearing aid. The earliest hearing aids (the ear trumpet) just provided gain.
+At the heart of any hearing aid is the 'gain model', and the BioAid algorithm falls into this category. The most basic goal of any hearing assistive device is to restore audibility of sounds that were previously inaudible to the hearing-impaired listener. Hearing impaired listeners have a reduced sensitivity to environmental sounds, i.e. they cannot detect the low level sounds that a normal hearing listener would be able to detect, and so it can be said that their thresholds of hearing are relatively high, or raised. To compensate for this deficit, the intensity of the stimulus must be increased, i.e. gain is provided by the hearing aid. The earliest hearing aids (the ear trumpet) just provided gain.
 
-It is important to note that a flat loss (equal loss of sensitivity across frequency) is quite a rare from of hearing impairment. More commonly, there is a distinct pattern of hearing loss, where the sensitivity is different to that of normal hearing listeners at different frequencies. For a hearing aid to work effectively across the audible spectrum, it must provide differing amounts of gain in different frequency regions. Modern hearing aids decompose sounds into separate frequency bands, perform various processing tasks, then finally recombine the signal into a waveform that can be presented to the listener via a loudspeaker. BioAid processing is no different to current hearing aids with regard to this general principle.
+It is important to note that a flat loss (equal loss of sensitivity across frequency) is not often observed. More commonly, there is a distinct pattern of hearing loss, where the sensitivity is different to that of normal hearing listeners at different frequencies. For a hearing aid to work effectively across the audible spectrum, it must provide differing amounts of gain in different frequency regions. Modern hearing aids decompose sounds into separate frequency bands, perform various processing tasks, then finally recombine the signal into a waveform that can be presented to the listener via a loudspeaker. BioAid processing is no different to current hearing aids with regard to this general principle.
 
 Most hearing impaired listeners will begin to experience discomfort from loud sounds at levels not too dissimilar to those with a normal hearing sensitivity<sup>\*</sup>. This means that the impaired listener has a reduced dynamic range into which the important sonic information must be squeezed. If the hearing aid applies a linear gain irrespective of the incoming sound intensity, it will help the listener detect quiet sounds, but it will also make loud sounds unbearably loud. For this reason, modern hearing aids also use compression algorithms. A lot of gain is applied to low intensity sounds to help with audibility, while considerably less gain is applied to high intensity sounds to preserve listener comfort. 
 
@@ -40,8 +40,8 @@ If BioAid is a multi-band compressor with both slow and fast acting components, 
 
 
 
-Motivation for BioAid
----------------------
+Technical motivation for BioAid
+-------------------------------
 
 BioAid is unique in that the algorithm has been designed from the ground up to mimic the processes that occur in the ear. Hearing aid technology has generally evolved to solve problems with each generation of algorithm design. This incremental approach provides an increasingly refined product. However, the problem with extended design and refine methods of development, is that the returns from each design revision generally tend to diminish. There is an asymptote. This partly explains why so much effort is now expended on the development of peripheral technologies in hearing aids, away from the core gain model. Machine hearing is a related field in which performance improvements are becoming harder to obtain using refinements of standard methods. In that field, there is a change going on, whereby radically different signal processes are being researched that are based on more physiologically accurate models of human hearing. Following in this revolutionary zeitgeist, BioAid is an effort to break through a current intellectual plateau in hearing aid gain model design.
 
@@ -55,6 +55,10 @@ There is one major difference between BioAid and the peripheral model used in th
 BioAid Architecture
 -------------------
 
+The image below shows a block diagram of the various components
+
+* Flow diagram of the auditory periphery
+* Discussion of the
 * Flow diagram from presentation
 * Discuss things in terms of auditory periphery here - only describe the necessary bits and reference where possible
 * asd
