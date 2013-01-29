@@ -33,8 +33,8 @@ This biological system can be modeled of as a chain of discrete sequential proce
 The auditory model can then be used for various tasks. By making a model that can reproduce physical measurements, you can then use the model to predict the output of the system to all manner of different stimuli. For example, we know that the human auditory system is excellent at extracting speech information from noisy environments. By using the auditory model as a [front end for an automatic speech recognizer](http://asadl.org/jasa/resource/1/jasman/v132/i3/p1535_s1?isAuthorized=no), the modeler can investigate how the different components of the auditory periphery may contribute to this ability.
 
 
-The dual resonance non-linear filterbank
------------------------------------------
+The basic dual resonance non-linear filterbank
+----------------------------------------------
 
 There are a number of different models of cochlear mechanics. The dual resonance non-linear filterbank (DRNL) is the model developed within the Essex lab. BioAid is basically a modified version of the latest incarnation of the DRNL model.
 
@@ -42,11 +42,44 @@ The basic DRNL model was designed to account for two major experimental observat
 
 ![Stick](/images/BioAid_algo/obs1.png)
 
-The second observation is related to the relationship between the frequency selectivity of the BM with level. Each point along the BM displaces maximally at a specific frequency. Parts of the BM near to the interface with the stapes (base) respond maximally to high frequencies, while the opposite end (apex) responds maximally to low frequencies. At low stimulus levels, the regions are very frequency selective and do not respond much to off-frequency stimulation. However, at higher stimulus intensities, the BM has a reduced frequency selectivity, meaning that the BM will be displaced by a proportionately greater amount by off frequency stimuli when they have high intensity.
+<small>
+	Illustration of the BM 'Broken Stick' non-linearity. The x-axis is the input stapes displacement and the y-axis is the output BM displacement.
+</small>
+
+The second observation is related to the relationship between the frequency selectivity of the BM with level. Each point along the BM displaces maximally at a specific frequency. Parts of the BM near to the interface with the stapes (base) respond maximally to high frequencies, while the opposite end (apex) responds maximally to low frequencies. For this reason, different regions along the basilar membrane can be thought of as filters. At low stimulus levels, the regions are very frequency selective and do not respond much to off-frequency stimulation. However, at higher stimulus intensities, the BM has a reduced frequency selectivity, meaning that the BM will be displaced by a proportionately greater amount by off frequency stimuli when they have high intensity. Not only does the bandwidth of the auditory filters change with stimulus intensity, but the centre frequency (or best frequency) also shifts.
 
 ![Filter](/images/BioAid_algo/obs2.png)
 
-The DRNL is a parallel filterbank model, in that each position (interchangeable with frequency band) along the BM is modeled using a an independent DRNL section. The DRNL models observations described above using two independent processing pathways per frequency band.
+<small>
+	Illustration of level dependent frequency selectivity. Each line shows data from a different stimulus intensity. The x-axis is stimulus frequency and the y-axis is BM displacement for a fixed position along the membrane. 
+</small>
+
+The DRNL is a parallel filterbank model, in that each cochlear along the BM is modeled using a an independent DRNL band. Each frequency channel of the DRNL model is comprised of two independent processing pathways. These pathways share a common input and the outputs of the pathways are summed to give the final displacement value for the part of the BM being modeled. The linear pathway is made of a linear gain function and a bandpass filter. The nonlinear pathway is made of an instantaneous broken-stick non-linearity sandwiched between two bandpass filters. This arrangement is shown by the diagram below.
+
+![Filter](/images/BioAid_algo/DRNL.png)
+
+<small>
+	Schematic showing one frequency channel of the DRNL model
+</small>
+
+The linear pathway aims to simulate the passive mechanical properties of the cochlear. The output of this pathway alone would give the BM displacement if the active structures in the cochlear were not functioning. Conversely, the non-linear pathway is the contribution from the active mechanisms to the displacement. The 3-part piecewise relationship between BM and stapes displacement can be modeled by just summing the responses of the pathways. When performing decibel addition, the sum value is approximately the greater of the two values being summed. The output of each pathway is shown below, along with the sum total. The parameters are tuned so that the sum total matches the experimental data.
+
+![Filter](/images/BioAid_algo/DRNL_IO.png)
+
+<small>
+	The green line is the input-output (IO) function relating stapes to BM displacement of the linear pathway of the DRNL model. The blue line is the IO function for the non-linear pathway. The red line is the decibel sum of the two pathways.
+</small>
+
+The DRNL model can also reproduce the level dependent frequency selectivity data using this architecture. For this, the filters in the two pathways are tuned slightly differently. As the level of stimulation increases, the contribution of the linear pathway becomes significant. By using different filter tunings, it is possible to make a level dependent frequency response using linear filters alone. 
+
+
+The latst dual resonance non-linear filterbank
+----------------------------------------------
+
+Know that there is feedback
+
+Mounting evidence to show that this important for listening in noisy environments
+
 
 
 BioAid Architecture
