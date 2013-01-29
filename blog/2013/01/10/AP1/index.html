@@ -1,0 +1,593 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Audiophile AirPlay with Raspberry Pi: Part 1 - AudioPlastic</title>
+  <meta name="author" content="Nick Clark">
+
+  
+  <meta name="description" content="I had recently been looking into purchasing an Apple TV for the purpose of streaming audio via AirPlay. I have little interest in the video side of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://audioplastic.org/blog/2013/01/10/AP1/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="AudioPlastic" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37471615-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">AudioPlastic</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:audioplastic.org" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Audiophile AirPlay With Raspberry Pi: Part 1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-10T14:44:00+00:00" pubdate data-updated="true">Jan 10<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I had recently been looking into purchasing an Apple TV for the purpose of streaming audio via AirPlay. I have little interest in the video side of things, so I started searching for a dedicated audio solution, hoping to find a high fidelity airplay receiver. Given that AirPlay data is transmitted using a lossless codec, the potential for super-high fidelity is unlimited. </p>
+
+<p>After a little searching I found that a Raspberry Pi (RPi) could be converted into an airplay receiver. The only problem is the somewhat-less-than-perfect analogue audio output built into the RPi. The digital to analogue converter (DAC) in the RPi works using the <a href="http://en.wikipedia.org/wiki/Pulse-width_modulation">pulse-width modulation (PWM)</a> principle to keep costs down. Most high fidelity audio DACs work using the <a href="http://en.wikipedia.org/wiki/Pulse-code_modulation">pulse-code modulation (PCM)</a> principle, generally resulting in a more faithful representation of the digitally-encoded analogue signal.</p>
+
+<p>A PWM signal is comprised of a rapid series of electrical pulses. The pulse can either be zero voltage, or maximum voltage. The width <a href="http://en.wikipedia.org/wiki/Duty_cycle">(or duty cycle)</a> of the very rapid pulses is modulated such that the the desired output voltage is represented by the average voltage of the pulse train. This is then lowpass filtered to give a steady analogue voltage (the cutoff frequency of the filter can be well above the audible band). The pulse rate in the RPi is fixed at 100 MHz. The bit depth of this pulse stream is 1 bit (the pulse voltage can only be zero or maximum). The fixed pulse rate gives an upper limit on the amount of information that can be transmitted by the audio output built into the RPi. The following formula can be used to estimate the bit depth at the standard CD sampling rate of 44.1 kHz.</p>
+
+<script type="math/tex; mode=display"> log_{2}\left (\frac{100 \times 10^6}{44.1 \times 10^3}  \right ) = 11.15 </script>
+
+<p>This gives us a theoretical maximum of around 11 bits / sample at 44.1 kHz. This is absolutely fine for basic speech intelligibility when running a VIOP application, or for simple sound effects. However, for any serious music listening, at least 16-bit audio is required to get full resolution dynamic range out of CDs. This means that an external USB audio interface is required, but thankfully, there are some great USB external interfaces available.</p>
+
+<h3 id="the-hardware">The Hardware</h3>
+
+<p>I happened to have a Creative X-Fi HD laying around that I was able to temporarily repurpose. This is certainly not the best external DAC that money can buy, but it sounds very good for its price, and it is more than adequate for the initial testing phase of this project.</p>
+
+<p><img src="http://i47.tinypic.com/wgrxjt.jpg" alt="xFi HD" /></p>
+
+<p>The assembled test rig is shown in the screenshot below. The power is supplied by the USB hub.  The xFi current draw is fairly low, meaning it can be powered from the RPi using a Y-cable if desired. The networking is wired for the time being, but the setup could easily be changed to use wifi (I have found the ALFA Networks high power USB wifi devices to work very well compared to the small Edimax devices, but this is a whole other blog post). This setup is not very visually appealing, but it is functional, and this is just the pilot phase. I have been testing this setup by streaming music from my mac using iTunes, through the test equipment, and then onwards to some Rogers LS7t speakers. I have been listening for hours on end over the past few days without noticing a single audio drop or glitch. </p>
+
+<p>The sound quality is great. As far as I can tell, the digital data stream to the USB interface is uninterrupted and error free, meaning sound quality is exactly as if the Mac was directly connected to the the X-Fi Sound interface. Many people on the official Raspberry Pi forums have reported having difficulty getting stable audio when using an external USB interface. The rest of this blog article describes the software steps involved in getting pristine AirPlay audio through an external USB sound interface connected to the RPi.</p>
+
+<p><img src="http://i45.tinypic.com/rbwpk6.jpg" alt="Ugly, but does the job marvelously" /></p>
+
+<h3 id="preparation">Preparation</h3>
+
+<p>Before we begin, make sure that you have the Debian Wheezy operating system installed, and that you have secure shell (SSH) access to your RPi (the instructions for doing so are beyond the scope of this tutorial, but the steps required can easily be found by searching the web). Make sure that you can log onto the RPi over the network before proceeding.</p>
+
+<p>The very first step is to upgrade the packages on the RPi. As root, do the following …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~# aptitude update
+</span><span class="line">root@raspberrypi:~# aptitude upgrade</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>On my system, the uname command gives the following output (so long as the output you see has the same date stamp, or is newer, then things should be OK) …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">pi@raspberrypi ~ $ uname -a
+</span><span class="line">Linux raspberrypi 3.6.11+ #348 PREEMPT Tue Jan 1 16:33:22 GMT 2013 armv6l GNU/Linux</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The next step is to upgrade the RPi’s firmware. As root, use the following command …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~# rpi-update</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>For me, this failed on the first run, but worked OK on the second attempt. For detailed information regarding the rpi-update command, see the associated <a href="https://github.com/Hexxeh/rpi-update">github repository</a>.</p>
+
+<h3 id="test-airplay-using-the-onboard-sound">Test AirPlay using the onboard sound</h3>
+
+<p>This section is a summary of the instructions <a href="http://trouch.com/2012/08/03/airpi-airplay-audio-with-raspberry/">found here</a>. The default audio output should be set to the onboard stereo jack. For this, a single command is required as root …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~# amixer cset numid=3 1</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Before download and compilation of the shairport software (this is the software that makes the RPi mimic an authentic AirPlay device), some prerequisites need to be installed. As root, install the following packages …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~# aptitude install git libao-dev libssl-dev libcrypt-openssl-rsa-perl libio-socket-inet6-perl libwww-perl avahi-utils</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>I also needed to get the Net::SDP perl library when I tried this. This was done using the following command as root …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~# cpan install Net::SDP</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>With all the prerequisites successfully installed, the next step is to download shairport sources and compile them as root …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~# git clone https://github.com/albertz/shairport.git shairport
+</span><span class="line">root@raspberrypi:~# cd shairport
+</span><span class="line">root@raspberrypi:~/shairport# make</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Shairport can now be tested by launching it in the foreground …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~/shairport# ./shairport.pl -a AirPi</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>… and then connecting to it using an AirPlay compatible device. The streamed data should then be audible from the 3.5 mm jack with speakers or headphones attached.</p>
+
+<h3 id="getting-an-external-usb-dac-to-work-without-pops--clicks--noise">Getting an external USB DAC to work without pops / clicks / noise</h3>
+
+<p>Firstly, install some prerequisites as root …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~# apt-get install libasound2-plugins
+</span><span class="line">root@raspberrypi:~# apt-get install libesd0
+</span><span class="line">root@raspberrypi:~# apt-get install nas</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The next step is to edit /boot/cmdline.txt to fix some of the potential causes of pops when using a USB sound interface. Open /boot/cmdline.txt in the nano editor as root …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~# nano /boot/cmdline.txt</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Add the following text to the file. I’m not sure if the position of the text makes a difference, but I appended the text to the front of the existing text. Once the text has been added, quit the nano editor using ctrl+x and save the changes by hitting return when prompted.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">dwc_otg.speed=1 dwc_otg.fiq_fix_enable=1 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Using nano as in the previous step (or your favorite editor), edit /etc/libao.conf so that it contains the following …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">default_driver=alsa
+</span><span class="line">dev=default
+</span><span class="line">use_mmap=no</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Edit /etc/modprobe.d/alsa-base.conf, commenting out the snd-usb-audio line and adding the snd_bcm2835 line so part of the file looks like the following …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">#options snd-usb-audio index=-2
+</span><span class="line">options snd_bcm2835 index=-2</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>For testing purposes, create a hidden file, .asoundrc, in the home directory of a regular user. For example, as pi …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">pi@raspberrypi ~ $ touch .asoundrc</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then edit this file to contain the following configuration data…</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">pcm.!default {
+</span><span class="line">    type plug
+</span><span class="line">    slave.pcm "softvol"
+</span><span class="line">}
+</span><span class="line">pcm.dmixer {
+</span><span class="line">       type dmix
+</span><span class="line">       ipc_key 1024
+</span><span class="line">       slave {
+</span><span class="line">           pcm "hw:0"
+</span><span class="line">           period_time 0
+</span><span class="line">           period_size 4096
+</span><span class="line">           buffer_size 131072
+</span><span class="line">           rate 44100
+</span><span class="line">       }
+</span><span class="line">       bindings {
+</span><span class="line">           0 0
+</span><span class="line">           1 1
+</span><span class="line">       }
+</span><span class="line">}
+</span><span class="line">pcm.dsnooper {
+</span><span class="line">       type dsnoop
+</span><span class="line">       ipc_key 1024
+</span><span class="line">       slave {
+</span><span class="line">           pcm "hw:0"
+</span><span class="line">           channels 2
+</span><span class="line">           period_time 0
+</span><span class="line">           period_size 4096
+</span><span class="line">           buffer_size 131072
+</span><span class="line">           rate 1
+</span><span class="line">       }
+</span><span class="line">       bindings {
+</span><span class="line">           0 0
+</span><span class="line">           1 1
+</span><span class="line">       }
+</span><span class="line">}
+</span><span class="line">pcm.softvol {
+</span><span class="line">       type softvol
+</span><span class="line">       slave { pcm "dmixer" }
+</span><span class="line">       control {
+</span><span class="line">           name "Master"
+</span><span class="line">           card 0
+</span><span class="line">       }
+</span><span class="line">}
+</span><span class="line">ctl.!default {
+</span><span class="line">    type hw
+</span><span class="line">    card 0
+</span><span class="line">}
+</span><span class="line">ctl.softvol {
+</span><span class="line">    type hw
+</span><span class="line">    card 0
+</span><span class="line">}
+</span><span class="line">ctl.dmixer {
+</span><span class="line">    type hw
+</span><span class="line">    card 0
+</span><span class="line">}
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Restart the RPi before proceeding. Attach the external USB sound interface to some speakers or headphones, manually start up shairport again like in the previous example, then test it by connecting to the shairport server and streaming some music</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~/shairport# ./shairport.pl -a AirPi</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If this all works OK, then make a demon process so that shairport always runs on startup or after the RPi is reset.</p>
+
+<h3 id="running-the-airport-server-at-startup">Running the AirPort server at startup</h3>
+
+<p>The first task is to copy the local .asoundrc to /etc/asound.conf so that it can be found by the demon process. This tripped me up for a bit! </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~# cp /home/pi/.asoundrc /etc/asound.conf</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>As root, install the shairport software, copy the default configuration, make the shairport init script executable, and then update rc.d by issuing the following commands …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:~/shairport# make install
+</span><span class="line">root@raspberrypi:~/shairport# cp shairport.init.sample /etc/init.d/shairport
+</span><span class="line">root@raspberrypi:~/shairport# cd /etc/init.d
+</span><span class="line">root@raspberrypi:/etc/init.d# chmod a+x shairport
+</span><span class="line">root@raspberrypi:/etc/init.d# update-rc.d shairport defaults</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Before starting the daemon, we have to add the AP Name in the launch parameters. Edit the file using nano shairport then change the DAEMON_ARGS variable line so it looks like the following …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">DAEMON_ARGS="-w $PIDFILE -a AirPi"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Replace AirPi with whatever you want it to appear as on your network. The demon can be started using the following …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">root@raspberrypi:/etc/init.d# ./shairport start</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The AirPlay service will now start whenever the RPi is powered on.</p>
+
+<h3 id="coming-soon">Coming soon</h3>
+
+<p>In the next installment of this blog series, I will attempt to interface the Raspberry Pi with a <a href="http://schiit.com/cart/index.php?main_page=product_info&amp;cPath=0&amp;products_id=14">Schiit Modi</a> dedicated USB DAC. I have one on order from the manufacturer in the USA (it is currently in the post). These are supposed to provide incredible sound quality for the price. the problem with the xFi is that it tires to do too much (optical / audio in / headphone amp). the Modi just has a USB input and a stereo line level analogue output. As an AipPlay device for use with the Raspberry Pi, no money (or size) is wasted on superfluous functionality. </p>
+
+<p>In the next installment, I also intend to some controlled tests to compare the setup’s sound quality to an Apple TV. I’ll do this with a number of listeners. I’m excited to find out what happens!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Clark</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-10T14:44:00+00:00" pubdate data-updated="true">Jan 10<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.org/blog/2013/01/10/AP1/" data-via="audioplastic" data-counturl="http://audioplastic.org/blog/2013/01/10/AP1/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/09/cobalt/" title="Previous Post: Cobalt theme for Xcode">&laquo; Cobalt theme for Xcode</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/23/matlab-cobalt/" title="Next Post: Cobalt theme for Matlab">Cobalt theme for Matlab &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/bioaid-algo/">BioAid: Motivations for making a new type of hearing aid</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/matlab-cobalt/">Cobalt theme for Matlab</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/10/AP1/">Audiophile AirPlay with Raspberry Pi: Part 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/09/cobalt/">Cobalt theme for Xcode</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/diff-eqn1/">Basic Differential Equations Tutorial</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("audioplastic", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/audioplastic" class="twitter-follow-button" data-show-count="false">Follow @audioplastic</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Nick Clark -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'audioplasticblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://audioplastic.org/blog/2013/01/10/AP1/';
+        var disqus_url = 'http://audioplastic.org/blog/2013/01/10/AP1/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

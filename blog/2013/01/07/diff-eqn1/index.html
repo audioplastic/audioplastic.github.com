@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Basic Differential Equations Tutorial - AudioPlastic</title>
+  <meta name="author" content="Nick Clark">
+
+  
+  <meta name="description" content="This is a brief tutorial showing how to use differential equations to do make predictions about the state of a simple dynamic analogue electronics &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://audioplastic.org/blog/2013/01/07/diff-eqn1/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="AudioPlastic" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37471615-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">AudioPlastic</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:audioplastic.org" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Basic Differential Equations Tutorial</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-07T10:36:00+00:00" pubdate data-updated="true">Jan 7<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This is a brief tutorial showing how to use differential equations to do make predictions about the state of a simple dynamic analogue electronics circuit. I have ported this post over from my discontinued Wordpress blog, as some readers may find the information useful. </p>
+
+<p>Put simply, a differential equation is any equation that contains derivatives. A derivative is basically a gradient, and so it is an equation that describes a system containing something that changes. In audio, this will likely be something that changes over time (t), so an example might be</p>
+
+<script type="math/tex; mode=display">  ty\frac{ {d}^{2} y }{dt}+y\frac{dy}{dt}+{e}^{8t}=0  </script>
+
+<p>I looks kinda like a polynomial, but with various order derivatives. We’d call this example a second order differential equation, as the highest order derivative is 2.</p>
+
+<p>I quickly want to move onto a real world example, showing some useful stuff we can do with differential equations. For this, I’m going to use simple electronic components in a circuit and then try and predict the state of the circuit at a given time. I’m going to use basic analogue electronic components for my first real-world example, as digital filter theory is rooted in basic analogue electronics theory.</p>
+
+<p>The complex impedance (<script type="math/tex">Z</script>) of a circuit is made up of real resistive terms (<script type="math/tex">R</script>) and imaginary reactive terms (<script type="math/tex">X</script>) &#8230;</p>
+
+<script type="math/tex; mode=display"> Z=R+jX </script>
+
+<p>The reactance term comes from the combination of inductance and capacitance. Like resistance, capacitance and inductance are inherent properties of electronic components. The capacitative effect comes from built up electric field that resists voltage changes. The inductive effect comes from the build up of magnetic field that resists changes in current. Reactance effects are only exhibited when circuit conditions change. Therefore, we can use differential equations to predict the state of a circuit after a change. For the following example, the change is the circuit being switched on.</p>
+
+<p>Consider a simple circuit containing a prefect voltage source, a resistor and an inductor &#8230; </p>
+
+<p><img src="http://i48.tinypic.com/2hwnea.png" alt="" width="60%" /></p>
+
+<p>When the circuit is switched on, the inductor chokes the initial burst of current, giving rise to a gradual increase in current through the inductor until a maximum value is reached. </p>
+
+<p>One way to visualise the current flow through this circuit is to build it and measure it, but this is a bit of a faff. Another way is to use electronic simulation software. For simple circuits (and even for relatively complex ones too) I am a huge fan of the excellent and free web app, <a href="www.circuitlab.com">CircuitLab</a>. CircuitLab allows the user to just drag and drop various components, set their values, then produce simulation plots like that shown below.</p>
+
+<p><img src="http://i45.tinypic.com/al3hgm.png" alt="" width="100%" /></p>
+
+<p>The plot shows that the rise in current through the inductor is not linear with time. This is because the relationship between the inductance (L), voltage (V), and current (I) is differential - it changes over time &#8230; </p>
+
+<script type="math/tex; mode=display"> V = L\frac{dI}{dt} </script>
+
+<p>We will now see if we can predict the current for any given time analytically using differential equations. We know from Kirchoff’s Voltage Law that the sum total voltage drop across series components (VR and VL) equals the supply voltage (VS) …</p>
+
+<script type="math/tex; mode=display"> V_R + V_L = V_S </script>
+
+<p>We want to predict the current, so using Ohm’s law (V=IR), we can express this in terms of current (I) …</p>
+
+<script type="math/tex; mode=display"> IR + L\frac{dI}{dt} = V_S </script>
+
+<p>The next thing we want to do is get this into a suitable form for integration so we can remove the differential terms (dI and dt) and find a solution. THe first step is to split dI and dt …</p>
+
+<script type="math/tex; mode=display"> LdI = (V_S-IR)dt </script>
+
+<p>… then separate the rest of the variables …</p>
+
+<script type="math/tex; mode=display"> \frac{L}{V_S-IR}dI = dt </script>
+
+<p>This is now in a suitable form for integration. </p>
+
+<script type="math/tex; mode=display"> \int \frac{L}{V_S-IR}dI =\int 1dt </script>
+
+<p>This is a great time to introduce a web app that I find particularly useful, <a href="http://www.wolframalpha.com/">Wolfram Alpha</a>. This tool can be used to perform calculus. It will show the intermediate steps towards a solution, so there is no black-box trickery to get in the way of our understanding. I have posted a screenshot of the output of the web app when asked to integrate the left-hand-side (LHS) of the above equation. It saves all the <script type="math/tex">LaTeX</script> typing anyway!</p>
+
+<p><img src="http://i48.tinypic.com/30tmi2o.png" alt="" width="100%" /></p>
+
+<p>Integration of the right-hand-side (RHS) is trivial, so we end up with the following &#8230; </p>
+
+<script type="math/tex; mode=display"> -\frac{L ln(V_S-IR)}{R}+c_1 = t + c_2 </script>
+
+<p>We are still trying to solve this for current, so the next step is to isolate the logarithmic term so that both sides of the equation can be easily exponentiated …</p>
+
+<script type="math/tex; mode=display"> ln(V_S-IR) = -\frac{R}{L}t -\frac{R}{L}(c_1+c_2) </script>
+
+<p>Now simply exp() both sides …</p>
+
+<script type="math/tex; mode=display"> V_S-IR = {e}^{-\frac{R}{L}t} {e}^{-\frac{R}{L}(c_1+c_2)} </script>
+
+<p>Now save a little writing by using the following alias for K, where K is some constant term …</p>
+
+<script type="math/tex; mode=display"> K = {e}^{-\frac{R}{L}(c_1+c_2)} </script>
+
+<p>… and so …</p>
+
+<script type="math/tex; mode=display"> V_S-IR = K{e}^{-\frac{R}{L}t} </script>
+
+<p>This allows us to finally get the current term by itself …</p>
+
+<script type="math/tex; mode=display"> I = \frac{K}{R} {e}^{-\frac{R}{L}t} - \frac{V_S}{R} </script>
+
+<p>Great! We can almost state the current at a given time after the circuit is switched on, but there are still some pesky unknown constant terms in K that would cause some uncertainty in the result. However, this is not a problem because we know the initial conditions at switch on. At time t=0, the current through the circuit I=0. Substituting this in …</p>
+
+<script type="math/tex; mode=display"> 0 = \frac{K}{R} {e}^{0} - \frac{V_S}{R} </script>
+
+<p>And so it follows …</p>
+
+<script type="math/tex; mode=display"> \frac{K}{R} = \frac{V_S}{R} </script>
+
+<p>so …</p>
+
+<script type="math/tex; mode=display"> K = V_S </script>
+
+<p>Now we can determine the current at any given time after switch on!</p>
+
+<script type="math/tex; mode=display"> I = \frac{V_S}{R} (1-{e}^{-\frac{R}{L}t}) </script>
+
+<p>It is then easy to check if our analytical solution matches our hardware equivalent by making a quick Matlab script &#8230; </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="matlab"><span class="line"><span class="n">tAxis</span> <span class="p">=</span> 0<span class="p">:</span>1<span class="n">e</span><span class="o">-</span>4<span class="p">:</span>5<span class="n">e</span><span class="o">-</span>3<span class="p">;</span> <span class="c">% Time Axis</span>
+</span><span class="line">
+</span><span class="line"><span class="c">% We can use a Lambda to neatly represent our solution</span>
+</span><span class="line"><span class="n">current</span> <span class="p">=</span> <span class="p">@(</span><span class="n">V</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">t</span><span class="p">)(</span><span class="n">V</span><span class="o">/</span><span class="n">R</span><span class="p">)</span><span class="o">*</span><span class="p">(</span>1<span class="o">-</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="o">*</span><span class="n">R</span><span class="o">/</span><span class="n">L</span><span class="p">));</span>
+</span><span class="line"><span class="n">figure</span><span class="p">;</span>
+</span><span class="line"><span class="n">plot</span><span class="p">(</span>1000<span class="o">*</span><span class="n">tAxis</span><span class="p">,</span>1000<span class="o">*</span><span class="n">current</span><span class="p">(</span>9<span class="p">,</span>20<span class="p">,</span>10<span class="n">e</span><span class="o">-</span>3<span class="p">,</span><span class="n">tAxis</span><span class="p">),</span><span class="s">&#39;Linewidth&#39;</span><span class="p">,</span>2<span class="p">);</span>
+</span><span class="line"><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Time [ms]&#39;</span><span class="p">);</span> <span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Current [mA]&#39;</span><span class="p">);</span> <span class="n">ylim</span><span class="p">([</span>0 500<span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="http://i45.tinypic.com/19vvxf.png" /></p>
+
+<p>So there we have it. I differential equation solved that allows us to predict the behaviour of a real physical system.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Clark</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-07T10:36:00+00:00" pubdate data-updated="true">Jan 7<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.org/blog/2013/01/07/diff-eqn1/" data-via="audioplastic" data-counturl="http://audioplastic.org/blog/2013/01/07/diff-eqn1/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii/" title="Previous Post: Matlab-like profiling in C++ using RAII">&laquo; Matlab-like profiling in C++ using RAII</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/09/cobalt/" title="Next Post: Cobalt theme for Xcode">Cobalt theme for Xcode &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/bioaid-algo/">BioAid: Motivations for making a new type of hearing aid</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/matlab-cobalt/">Cobalt theme for Matlab</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/10/AP1/">Audiophile AirPlay with Raspberry Pi: Part 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/09/cobalt/">Cobalt theme for Xcode</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/diff-eqn1/">Basic Differential Equations Tutorial</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("audioplastic", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/audioplastic" class="twitter-follow-button" data-show-count="false">Follow @audioplastic</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Nick Clark -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'audioplasticblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://audioplastic.org/blog/2013/01/07/diff-eqn1/';
+        var disqus_url = 'http://audioplastic.org/blog/2013/01/07/diff-eqn1/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

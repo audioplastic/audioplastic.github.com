@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>BioAid: Motivations for making a new type of hearing aid - AudioPlastic</title>
+  <meta name="author" content="Nick Clark">
+
+  
+  <meta name="description" content="Just before Christmas, I submitted a free app (BioAid) to the Apple iTunes Store that turns an iOS device into a hearing aid. It does this by taking &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://audioplastic.org/blog/2013/01/24/bioaid-algo/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="AudioPlastic" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37471615-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">AudioPlastic</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:audioplastic.org" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">BioAid: Motivations for Making a New Type of Hearing Aid</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-24T14:48:00+00:00" pubdate data-updated="true">Jan 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Just before Christmas, I submitted a free app (<a href="http://itunes.com/apps/nicholasclark">BioAid</a>) to the Apple iTunes Store that turns an iOS device into a hearing aid. It does this by taking the audio stream from the internal microphone, processing the audio in real time, and then playing the audio back over headphones connected to the device. For more general information on usage, please visit the <a href="http://bioaid.org.uk">main BioAid site</a>. This information is placed on my blog, allowing me to rapidly, and informally communicate some of the technical details related to the project while I gather thoughts in preparation for a more rigorous account. This is the first part of a series of posts that I intend to write about the project.</p>
+
+<p><img src="/images/BioAid_algo/Screenshot_A_web.png" alt="BioAid Screenshot" width="30%" /></p>
+
+<p><small>
+	Screenshot of the BioAid app running on an iPhone.
+</small></p>
+
+<p>BioAid is not some gimmicky sound amplifier app. The development and evaluation of the algorithm has been conducted by a team of researchers within the <a href="http://www.essex.ac.uk/psychology/department/HearingLab/Welcome.html">hearing research laboratory</a> at the University of Essex. Our research group became involved in the development of an ‘aid on a phone’ out of necessity. BioAid is a novel design for a hearing aid that is still in its infancy. There was little chance of having it made up as a conventional hearing aid for a number of reasons. We could test it in the laboratory (using a setup described below) but convincing a manufacturer to adopt the algorithm would require a considerable financial investment. Making a case would be difficult even if our new ideas were to provide a small improvement to an established design. However, we wanted to do something much more radical. I realised that we could move directly into production using a mobile phone as a portable experimental hearing aid. This would allow us to demonstrate the viability of the concept and learn from the experiences of people all around the world, not just in our laboratory.</p>
+
+<p>Laboratory tests with hearing-impaired volunteers are still in progress. These tests are being conducted using a ‘lab-scale’ version of BioAid, comprised of standard behind the ear (BTE) hearing aids that are connected to a laptop computer. The signal processing that would normally occur within the hearing aid is offloaded to the laptop, making it easier for us to change the parameters in the hearing aid at runtime, or even tweak the algorithm structure itself. Another avenue of research uses the algorithm to pre-process acoustic stimuli in an off-line mode (not real time) before they are presented to listeners over headphones. Therefore, it is important to think of BioAid as an algorithm concept, rather than to pigeon-hole it as an iOS app. The BioAid algorithm has potential for use in many applications, and the iPhone app is just one form in which BioAid exists. Another one of the numerous motivations for making the iPhone implementation was that it might inspire others to use the algorithm in unusual ways, perhaps for processing speech in a VIOP application, or as a hack for a media centre, allowing film and television audio to be processed at the source. This is why the source is freely available at <a href="http://github.com/audioplastic/BioAid">GitHub</a>. There is also a <a href="http://facebook.com/bioaidapp">Facebook page</a> that I encourage anyone interested in the project to ‘like’ so that they can be periodically informed of developments.</p>
+
+<h2 id="generic-hearing-aid-gain-model">Generic hearing aid ‘gain model’</h2>
+
+<p>Modern hearing aids contain all manner of signal processing wizardry to assist the impaired listener in various ways. Much effort goes into developing noise-reduction technologies, and microphone array technology coupled with beam-forming algorithms to reduce off-axis sound interference. These may help to improve speech reception, or at least alleviate some of the exhaustion associated with the increased listening effort required from impaired listeners, especially when extracting information from sounds of interest in cacophonous environments. Processing often includes feedback cancellation algorithms to prevent howl associated with high gain settings in conjunction with open (non occluded) fittings. Some hearing aids even transpose information from different frequency bands to others. However, these technologies are not related to the core BioAid processing.</p>
+
+<p>At the heart of any hearing aid is the ‘gain model’, and the BioAid algorithm falls into this category. The most basic goal of any hearing assistive device is to restore audibility of sounds that were previously inaudible to the hearing-impaired listener. Hearing impaired listeners have a reduced sensitivity to environmental sounds, i.e. they cannot detect the low level sounds that a normal hearing listener would be able to detect, and so it can be said that their thresholds of hearing are relatively high, or raised. To compensate for this deficit, the intensity of the stimulus must be increased, i.e. gain is provided by the hearing aid. The earliest hearing aids (the ear trumpet) just provided gain.</p>
+
+<p>It is important to note that a flat loss (equal loss of sensitivity across frequency) is not often observed. More commonly, there is a distinct pattern of hearing loss, where the sensitivity is different to that of normal hearing listeners at different frequencies. For a hearing aid to work effectively across the audible spectrum, it must provide differing amounts of gain in different frequency regions. Modern hearing aids decompose sounds into separate frequency bands, perform various processing tasks, then finally recombine the signal into a waveform that can be presented to the listener via a loudspeaker. BioAid processing is no different to current hearing aids regarding this general principle.</p>
+
+<p>Most hearing impaired listeners will begin to experience discomfort from loud sounds at levels not too dissimilar to those with a normal hearing sensitivity<sup>*</sup>. This means that the impaired listener has a reduced dynamic range into which the important sonic information must be squeezed. If the hearing aid applies a linear gain irrespective of the incoming sound intensity, it will help the listener detect quiet sounds, but it will also make loud sounds unbearably loud. For this reason, modern hearing aids also use compression algorithms. A lot of gain is applied to low intensity sounds to help with audibility, while considerably less gain is applied to high intensity sounds, so as not to over-amplify sounds that are already audible to the listener. </p>
+
+<p>The figure below (<a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3376894/">taken from this open-access publication</a>) is shown help illustrate the concept of reduced dynamic range. It shows categorical loudness scaling (CLS) functions for a hypothetical hearing-impaired listener and a hypothetical normal-hearing listener. A test stimulus is presented at various intensities (represented by the x-axis), and the listener is asked to categorize the loudness on a rating scale (represented by the y-axis). For sounds rated as just audible, there is a large intensity difference between the normal- and impaired-hearing listener data. However, for sounds perceived as very loud, there is little or no difference between the two listeners. The normal-hearing listener’s ratings span a range of approximately 90 dB, whereas the impaired-listener’s ratings span a relatively reduced range of approximately 50 dB.</p>
+
+<p><img src="/images/BioAid_algo/CL.jpg" alt="ategorical loudness scaling" width="75%" /></p>
+
+<p><small>
+	Categorical Loudness Scaling functions for hypothetical normal- and impaired-hearing listeners. Taken from <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3376894/">here</a>.
+</small></p>
+
+<p>Unfortunately, any non-linear process (including dynamic range compression) applied to the processing chain will have side effects. In order to protect the listener from sudden loud sounds, the compression algorithm needs to respond quickly. However, standard compression algorithms with rapid temporal acuity tend to make the acoustical environment sound distinctly unnatural. The action of the compressor is clearly audible and can interfere with the important information contained in the amplitude modulations of signals such as speech. Fast compression reduces the modulation depth of amplitude modulates signals, and can therefore reduce our ability to extract information from the glimpses of signal information we might otherwise receive during the low intensity dips in modulated masking sounds. <em>Very</em> fast compression also changes the signal to noise ratio (SNR) of steady state signal and noise mixtures. At positive SNRs, the signal is of greater amplitude than the noise signal. If compression is so fast that it works near instantaneously, then the high level peaks of the signal will not be amplified as much as the lower level peaks in the noise signal. The noise level will increase relative to the level of the signal information reducing an otherwise advantageous SNR. The resulting negative impact on speech intelligibility is compounded by any distortion introduced by the compression process. In contrast, slowly acting compression algorithms do not impose so many negative side effects. A very slow compressor acts like a person continuously adjusting the volume control of an amplifier while watching a movie: the gain is increased for the quiet spoken passages, and then decreased in the loud action sequences. This works well for sounds with slowly changing intensity, and the sound ‘quality’ is not vastly altered. However, this is problematic if the volume is cranked up for quiet spoken passages, and there is a sudden intense event in the soundtrack that nearly deafens the audience. For this reason, both fast and slow acting compression algorithms are used in modern hearing aids to get the best possible compromise**. BioAid also utilizes fast and slow acting compression.</p>
+
+<p>If BioAid is a multi-band compressor with both slow and fast acting components, then how is it different to current hearing aid gain models? On the surface, BioAid looks similar, but the architecture is certainly unique, and this gives it some unique properties.</p>
+
+<p><small>
+	<sup>*</sup>This is with the exception of those whose hearing is affected by a problem with the transfer of energy through the middle ear, who will generally have an increased discomfort threshold in addition to a raised detection threshold. It is also worth noting that many hearing impaired listeners have a <em>lower</em> discomfort threshold than that of normal hearing listeners. This condition is known as <a href="http://en.wikipedia.org/wiki/Hyperacusis">hyperacusis</a> and is an area of active research.
+</small></p>
+
+<p><small>
+	<sup>**</sup>Modern digital hearing aids generally work by processing blocks (or frames) of samples. Each block of samples is processed and the output buffer is filled before the next block of samples arrives. This frame based processing is part of what gives rise to a hearing aid’s latency. This latency is generally undesirable, but while it exists, it can be used for good. It gives the compression algorithm the opportunity to ‘look ahead’ a few samples and adjust its parameters in an optimum way given the information about ‘future’ events.
+</small></p>
+
+<h2 id="technical-motivation-for-bioaid">Technical motivation for BioAid</h2>
+
+<p>BioAid is unique in that the algorithm has been designed from the ground up to mimic the processes that occur in the ear. Hearing aid technology has generally evolved to solve problems with each generation of algorithm design. This incremental approach provides an increasingly refined product. However, the problem with extended design and refine methods of development, is that the returns from each design revision generally tend to diminish. There is an asymptote. This partly explains why so much effort is now expended on the development of peripheral technologies in hearing aids, away from the core gain model. Machine hearing is a related field in which performance improvements are becoming harder to obtain using refinements of standard methods. In that field, there is a change going on, whereby radically different signal processes are being researched that are based on more physiologically accurate models of human hearing. Following in this revolutionary zeitgeist, BioAid is an effort to break through a current intellectual plateau in hearing aid gain model design.</p>
+
+<p>The human auditory periphery (sound processing associated with the ear and low-level brain processing) can be modeled of as a chain of discrete sequential processes. In general the output of each process just feeds into the next process in the sequence. There are also some feedback signals that originate in processes situated further along the chain that modulate the behavior of the earlier-stage systems. The PhD thesis of <a href="">Manasa Panda</a> demonstrates that it is possible to model common hearing pathologies by reducing the functionality of, or completely removing some of the processing blocks in the chain. This modified model is called a <a href="http://www.electronicsweekly.com/Articles/14/06/2011/51255/ear-simulation-leads-to-unique-hearing-aid.htm">‘Hearing Dummy’</a>, as the models of the periphery can be tailored to individual listeners. An artificial (machine) listener will make the same responses in hearing tests as the human when connected to their personalized Hearing Dummy.</p>
+
+<p>Having isolated the components of the model likely to cause the listening difficulties, we then thought it might be a good idea to replicate those processes in a hearing aid. This could be to assist some residual functionality of certain auditory components, or to completely replace lost functionality of others. BioAid can be thought of as a simplified auditory model, containing a chain of models of the components most susceptible to the malfunctions responsible for hearing impairments.</p>
+
+<p>There is one major difference between BioAid and the peripheral model used in the lab. In a standard model of the auditory periphery, the output is a code made of neural spikes representing the transformed sound information. Information in this form is useful for higher stages of brain processing with the correct interface, but it cannot be played back through a hearing aid. BioAid must deviate from the physiological model, as the sound must be recombined into a waveform that can be presented to the listener acoustically. Apart from this necessary alteration, we aim to remain faithful to the physiological model. This allows us to observe emergent properties of the system, rather than deliberately engineering properties into it.</p>
+
+<h2 id="next-time">Next Time</h2>
+
+<p>This post has described general hearing aid technology and some of scientific the motivations for developing a new class of hearing aid. In the subsequent post, I will detail the algorithm structure and its properties.</p>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Clark</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-24T14:48:00+00:00" pubdate data-updated="true">Jan 24<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.org/blog/2013/01/24/bioaid-algo/" data-via="audioplastic" data-counturl="http://audioplastic.org/blog/2013/01/24/bioaid-algo/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/23/matlab-cobalt/" title="Previous Post: Cobalt theme for Matlab">&laquo; Cobalt theme for Matlab</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/bioaid-algo/">BioAid: Motivations for making a new type of hearing aid</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/matlab-cobalt/">Cobalt theme for Matlab</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/10/AP1/">Audiophile AirPlay with Raspberry Pi: Part 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/09/cobalt/">Cobalt theme for Xcode</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/diff-eqn1/">Basic Differential Equations Tutorial</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("audioplastic", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/audioplastic" class="twitter-follow-button" data-show-count="false">Follow @audioplastic</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Nick Clark -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
