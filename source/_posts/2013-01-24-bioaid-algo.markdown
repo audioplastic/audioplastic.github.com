@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "BioAid: Motivations for making a new type of hearing aid"
+title: "BioAid Post 1: Motivations"
 date: 2013-01-24 14:48
 comments: false
 published: true
@@ -8,8 +8,6 @@ categories:
 ---
 
 Just before Christmas, I submitted a free app ([BioAid](http://itunes.com/apps/nicholasclark)) to the Apple iTunes Store that turns an iOS device into a hearing aid. It does this by taking the audio stream from the internal microphone, processing the audio in real time, and then playing the audio back over headphones connected to the device. For more general information on usage, please visit the [main BioAid site](http://bioaid.org.uk). This information is placed on my blog, allowing me to rapidly, and informally communicate some of the technical details related to the project while I gather thoughts in preparation for a more rigorous account. This is the first part of a series of posts that I intend to write about the project.
-
-
 
 <img src="/images/BioAid_algo/Screenshot_A_web.png" alt="BioAid Screenshot" width="30%">
 
@@ -70,8 +68,9 @@ There is one major difference between BioAid and the peripheral model used in th
 Next Time
 ----------
 
-This post has described general hearing aid technology and some of scientific the motivations for developing a new class of hearing aid. In the subsequent post, I will detail the algorithm structure and its properties.
+For those who want a technical overview of the whole project immediately, there is a YouTube video below containing a 42 minute screencast of a talk that I gave back in September 2012.
+
+<iframe width="420" height="315" src="http://www.youtube.com/embed/0hfFheal8KU" frameborder="0" allowfullscreen></iframe>
 
 
-
-
+This post has described general hearing aid technology and some of scientific the motivations for developing a new class of hearing aid. In the next posts, I will discuss the algorithm structure and its properties.
