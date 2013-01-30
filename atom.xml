@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[AudioPlastic]]></title>
-  <link href="http://audioplastic.org/atom.xml" rel="self"/>
-  <link href="http://audioplastic.org/"/>
-  <updated>2013-01-29T15:51:04+00:00</updated>
-  <id>http://audioplastic.org/</id>
+  <link href="http://audioplastic.github.com/atom.xml" rel="self"/>
+  <link href="http://audioplastic.github.com/"/>
+  <updated>2013-01-30T17:59:28+00:00</updated>
+  <id>http://audioplastic.github.com/</id>
   <author>
     <name><![CDATA[Nick Clark]]></name>
     
@@ -14,13 +14,13 @@
 
   
   <entry>
-    <title type="html"><![CDATA[BioAid: Motivations for making a new type of hearing aid]]></title>
-    <link href="http://audioplastic.org/blog/2013/01/24/bioaid-algo/"/>
+    <title type="html"><![CDATA[BioAid Post 1: Motivations]]></title>
+    <link href="http://audioplastic.github.com/blog/2013/01/24/bioaid-algo/"/>
     <updated>2013-01-24T14:48:00+00:00</updated>
-    <id>http://audioplastic.org/blog/2013/01/24/bioaid-algo</id>
+    <id>http://audioplastic.github.com/blog/2013/01/24/bioaid-algo</id>
     <content type="html"><![CDATA[<p>Just before Christmas, I submitted a free app (<a href="http://itunes.com/apps/nicholasclark">BioAid</a>) to the Apple iTunes Store that turns an iOS device into a hearing aid. It does this by taking the audio stream from the internal microphone, processing the audio in real time, and then playing the audio back over headphones connected to the device. For more general information on usage, please visit the <a href="http://bioaid.org.uk">main BioAid site</a>. This information is placed on my blog, allowing me to rapidly, and informally communicate some of the technical details related to the project while I gather thoughts in preparation for a more rigorous account. This is the first part of a series of posts that I intend to write about the project.</p>
 
-<p><img src="http://audioplastic.org/images/BioAid_algo/Screenshot_A_web.png" alt="BioAid Screenshot" width="30%" /></p>
+<p><img src="http://audioplastic.github.com/images/BioAid_algo/Screenshot_A_web.png" alt="BioAid Screenshot" width="30%" /></p>
 
 <p><small>
 	Screenshot of the BioAid app running on an iPhone.
@@ -42,7 +42,7 @@
 
 <p>The figure below (<a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3376894/">taken from this open-access publication</a>) is shown help illustrate the concept of reduced dynamic range. It shows categorical loudness scaling (CLS) functions for a hypothetical hearing-impaired listener and a hypothetical normal-hearing listener. A test stimulus is presented at various intensities (represented by the x-axis), and the listener is asked to categorize the loudness on a rating scale (represented by the y-axis). For sounds rated as just audible, there is a large intensity difference between the normal- and impaired-hearing listener data. However, for sounds perceived as very loud, there is little or no difference between the two listeners. The normal-hearing listener’s ratings span a range of approximately 90 dB, whereas the impaired-listener’s ratings span a relatively reduced range of approximately 50 dB.</p>
 
-<p><img src="http://audioplastic.org/images/BioAid_algo/CL.jpg" alt="ategorical loudness scaling" width="75%" /></p>
+<p><img src="http://audioplastic.github.com/images/BioAid_algo/CL.jpg" alt="ategorical loudness scaling" width="75%" /></p>
 
 <p><small>
 	Categorical Loudness Scaling functions for hypothetical normal- and impaired-hearing listeners. Taken from <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3376894/">here</a>.
@@ -72,17 +72,20 @@
 
 <h2 id="next-time">Next Time</h2>
 
-<p>This post has described general hearing aid technology and some of scientific the motivations for developing a new class of hearing aid. In the subsequent post, I will detail the algorithm structure and its properties.</p>
+<p>For those who want a technical overview of the whole project immediately, there is a YouTube video below containing a 42 minute screencast of a talk that I gave back in September 2012.</p>
 
+<iframe width="420" height="315" src="http://www.youtube.com/embed/0hfFheal8KU" frameborder="0" allowfullscreen=""></iframe>
+
+<p>This post has described general hearing aid technology and some of scientific the motivations for developing a new class of hearing aid. In the next posts, I will discuss the algorithm structure and its properties.</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Cobalt theme for Matlab]]></title>
-    <link href="http://audioplastic.org/blog/2013/01/23/matlab-cobalt/"/>
+    <link href="http://audioplastic.github.com/blog/2013/01/23/matlab-cobalt/"/>
     <updated>2013-01-23T16:20:00+00:00</updated>
-    <id>http://audioplastic.org/blog/2013/01/23/matlab-cobalt</id>
-    <content type="html"><![CDATA[<p>This is a quick post showing how to apply a cobalt-like theme to Matlab’s workspace and editor. Matlab has rather limited font and colour customization options compared to XCode (<a href="http://audioplastic.org/blog/2013/01/09/cobalt/">see my other post about the Cobalt theme</a>) but it is still possible to change the default theme to something that I personally find a little easier on the eyes.</p>
+    <id>http://audioplastic.github.com/blog/2013/01/23/matlab-cobalt</id>
+    <content type="html"><![CDATA[<p>This is a quick post showing how to apply a cobalt-like theme to Matlab’s workspace and editor. Matlab has rather limited font and colour customization options compared to XCode (<a href="http://audioplastic.github.com/blog/2013/01/09/cobalt/">see my other post about the Cobalt theme</a>) but it is still possible to change the default theme to something that I personally find a little easier on the eyes.</p>
 
 <p>The default Matlab theme (when viewed on a Mac) is shown below &#8230; </p>
 
@@ -138,9 +141,9 @@
   
   <entry>
     <title type="html"><![CDATA[Audiophile AirPlay with Raspberry Pi: Part 1]]></title>
-    <link href="http://audioplastic.org/blog/2013/01/10/AP1/"/>
+    <link href="http://audioplastic.github.com/blog/2013/01/10/AP1/"/>
     <updated>2013-01-10T14:44:00+00:00</updated>
-    <id>http://audioplastic.org/blog/2013/01/10/AP1</id>
+    <id>http://audioplastic.github.com/blog/2013/01/10/AP1</id>
     <content type="html"><![CDATA[<p>I had recently been looking into purchasing an Apple TV for the purpose of streaming audio via AirPlay. I have little interest in the video side of things, so I started searching for a dedicated audio solution, hoping to find a high fidelity airplay receiver. Given that AirPlay data is transmitted using a lossless codec, the potential for super-high fidelity is unlimited. </p>
 
 <p>After a little searching I found that a Raspberry Pi (RPi) could be converted into an airplay receiver. The only problem is the somewhat-less-than-perfect analogue audio output built into the RPi. The digital to analogue converter (DAC) in the RPi works using the <a href="http://en.wikipedia.org/wiki/Pulse-width_modulation">pulse-width modulation (PWM)</a> principle to keep costs down. Most high fidelity audio DACs work using the <a href="http://en.wikipedia.org/wiki/Pulse-code_modulation">pulse-code modulation (PCM)</a> principle, generally resulting in a more faithful representation of the digitally-encoded analogue signal.</p>
@@ -426,9 +429,9 @@
   
   <entry>
     <title type="html"><![CDATA[Cobalt theme for Xcode]]></title>
-    <link href="http://audioplastic.org/blog/2013/01/09/cobalt/"/>
+    <link href="http://audioplastic.github.com/blog/2013/01/09/cobalt/"/>
     <updated>2013-01-09T12:23:00+00:00</updated>
-    <id>http://audioplastic.org/blog/2013/01/09/cobalt</id>
+    <id>http://audioplastic.github.com/blog/2013/01/09/cobalt</id>
     <content type="html"><![CDATA[<p>I am very fond of the <a href="https://github.com/textmate/textmate">TextMate 2 open source editor</a>. I use it to write posts for this blog. I also really like the ‘cobalt’ text formatting theme that is included with TextMate.</p>
 
 <p>I do not like the hideous default themes that ship with Xcode, and neither does <a href="http://www.barowy.net/tips/cobalt.html">this guy</a>. Daniel Barowy kindly supplies a cobalt emulation theme for xcode on his site, but the file format does not work with the latest version of XCode. I converted this theme and tweaked it slightly to darken the appearance console output. The screenshot below shows Xcode adjacent to TextMate.</p>
@@ -733,9 +736,9 @@
   
   <entry>
     <title type="html"><![CDATA[Basic Differential Equations Tutorial]]></title>
-    <link href="http://audioplastic.org/blog/2013/01/07/diff-eqn1/"/>
+    <link href="http://audioplastic.github.com/blog/2013/01/07/diff-eqn1/"/>
     <updated>2013-01-07T10:36:00+00:00</updated>
-    <id>http://audioplastic.org/blog/2013/01/07/diff-eqn1</id>
+    <id>http://audioplastic.github.com/blog/2013/01/07/diff-eqn1</id>
     <content type="html"><![CDATA[<p>This is a brief tutorial showing how to use differential equations to do make predictions about the state of a simple dynamic analogue electronics circuit. I have ported this post over from my discontinued Wordpress blog, as some readers may find the information useful. </p>
 
 <p>Put simply, a differential equation is any equation that contains derivatives. A derivative is basically a gradient, and so it is an equation that describes a system containing something that changes. In audio, this will likely be something that changes over time (t), so an example might be</p>
@@ -856,9 +859,9 @@
   
   <entry>
     <title type="html"><![CDATA[Matlab-like profiling in C++ using RAII]]></title>
-    <link href="http://audioplastic.org/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii/"/>
+    <link href="http://audioplastic.github.com/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii/"/>
     <updated>2012-12-31T15:59:00+00:00</updated>
-    <id>http://audioplastic.org/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii</id>
+    <id>http://audioplastic.github.com/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii</id>
     <content type="html"><![CDATA[<p>I’ve always liked the ability to rapidly profile code snippets in Matlab using the ‘tic’ and ‘toc’ commands. I wanted to develop something equally as simple to use in C++ for rapid tests. It turns out that a particularly elegant way to do this is to use RAII techniques, allowing easy profiling of any commands within a scope. A time marker is made on construction, and another time marker is made on destruction, and then compared to the original time marker.</p>
 
 <p>The new ‘chrono’ classes bundles in the C++11 standard library make this task particularly simple. Below is the full class for simple tic toc type profiling …</p>
@@ -929,9 +932,9 @@
   
   <entry>
     <title type="html"><![CDATA[C++ palindrome detection]]></title>
-    <link href="http://audioplastic.org/blog/2012/11/30/c-plus-plus-palindrome-detection/"/>
+    <link href="http://audioplastic.github.com/blog/2012/11/30/c-plus-plus-palindrome-detection/"/>
     <updated>2012-11-30T16:11:00+00:00</updated>
-    <id>http://audioplastic.org/blog/2012/11/30/c-plus-plus-palindrome-detection</id>
+    <id>http://audioplastic.github.com/blog/2012/11/30/c-plus-plus-palindrome-detection</id>
     <content type="html"><![CDATA[<p>An interesting question popped up on stackoverflow about palindrome detection in c++. A palindrome is a word whose characters can be reversed, and no change is detectable, e.g. “racecar”. My initial thought was to make a copy and use the std::reverse algorithm &#8230; </p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -980,9 +983,9 @@
   
   <entry>
     <title type="html"><![CDATA[C++11 is poetic]]></title>
-    <link href="http://audioplastic.org/blog/2012/11/29/c-plus-plus-11-is-poetic/"/>
+    <link href="http://audioplastic.github.com/blog/2012/11/29/c-plus-plus-11-is-poetic/"/>
     <updated>2012-11-29T16:13:00+00:00</updated>
-    <id>http://audioplastic.org/blog/2012/11/29/c-plus-plus-11-is-poetic</id>
+    <id>http://audioplastic.github.com/blog/2012/11/29/c-plus-plus-11-is-poetic</id>
     <content type="html"><![CDATA[<p>I will start posting cool little blocks of code, like short poems when I see neat little things to do ..</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Find multiples in a vector the C++11 way</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -1023,9 +1026,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using inkscape vector graphics to generate a website logo]]></title>
-    <link href="http://audioplastic.org/blog/2011/07/03/inkscape-logo/"/>
+    <link href="http://audioplastic.github.com/blog/2011/07/03/inkscape-logo/"/>
     <updated>2011-07-03T00:00:00+01:00</updated>
-    <id>http://audioplastic.org/blog/2011/07/03/inkscape-logo</id>
+    <id>http://audioplastic.github.com/blog/2011/07/03/inkscape-logo</id>
     <content type="html"><![CDATA[<h2 id="using-inkscape-vector-graphics-to-generate-a-website-logo">Using inkscape vector graphics to generate a website logo</h2>
 
 <p>This is a quick tutorial showing the steps required to generate a logo like the one seen at the top of this page. For this, I used the fantastic open source Inkscape software. In the past, I have tried to learn how to use various vector graphics drawing software packages, but have always run out of patience. This was until trying Inkscape. In comparison, Inkscape is easy to grasp and there is a large amount of user generated documentation online that will help you to produce amazing looking graphics in no time. </p>
@@ -1034,23 +1037,23 @@
 
 <p>The first step is to open up the layers menu widget (Shift+… as shown) thing. I decided that I wanted some text with some lighting to make it look shiny and some special effects like a glow and a shadow. I decided to break this idea down into three layers as shown in the screenshot.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.18.36.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.18.36.png" alt="Alt text" /></p>
 
 <p>The next step was to create a basic logo using the text tool. Do this on the ‘BasicText’ layer. The ‘AP’ part of the logo used a non-standard font downloaded from a free font website. The colours of the text can be changed easily by highlighting a selection and then selecting one of the colours from the swatch at the bottom of the Inkscape window.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.20.17.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.20.17.png" alt="Alt text" /></p>
 
 <p>I wanted to check that the text was legible when using a black background. For this, I created a black rectangle and sent it too the back by using the item shown in the object dropdown menu. All looks good so I deleted the black box.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.20.45.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.20.45.png" alt="Alt text" /></p>
 
 <p>The next thing that I wanted to do was add lighting effects. I was only interested in doing this on the large text. The first thing to do was to duplicate the target text.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.22.18.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.22.18.png" alt="Alt text" /></p>
 
 <p>Once the duplicate was created, I moved the duplicate to it’s own layer that I reserved earlier for lighting effects.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.22.34.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.22.34.png" alt="Alt text" /></p>
 
 <p>The visibility of each layer can be changed by clicking the eye image in the layers menu window. The fist job that I did with the duplicate was to create a gradient from black to transparent, from bottom to top. THis was to make the lower part of the text look as if it is in a relatively shaded region The gradient can be locked to the vertical plane by holding the ctrl key while dragging the gradient tool.</p>
 
@@ -1058,35 +1061,35 @@
 
 <p>The next idea was to make the top of the text look shiny, like light is coming from above. For this, another duplicate was made and pushed into the lighting layer. I coloured it grey for better visibility. I then put an elipse on top of this duplicate.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.26.17.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.26.17.png" alt="Alt text" /></p>
 
 <p>The elipse and duplicated text were both selected and the intersection tool in the path menu was then used.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.26.34.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.26.34.png" alt="Alt text" /></p>
 
 <p>This does what it says on the tin.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.26.51.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.26.51.png" alt="Alt text" /></p>
 
 <p>Setting the basic text layer to visible under this gives the following.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.27.07.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.27.07.png" alt="Alt text" /></p>
 
 <p>The colour of the inset was changed from grey to white and then a gradient was applied to transparent, adding to the shiny look.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.27.59.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.27.59.png" alt="Alt text" /></p>
 
 <p>To give the edge of the text more colour definition, an inset was added like so.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.28.13.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.28.13.png" alt="Alt text" /></p>
 
 <p>To give the following result.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.28.37.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.28.37.png" alt="Alt text" /></p>
 
 <p>Looking good! I wanted to give the coloured text a neon glow, so I duplicated the basic text once more and pushed it into the effects layer.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.32.17.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.32.17.png" alt="Alt text" /></p>
 
 <p>I then used the blur tool from the colours window to get the glow effect.</p>
 
@@ -1094,7 +1097,7 @@
 
 <p>The layers can all be set to visible once again to see the combined effect.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.37.04.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.37.04.png" alt="Alt text" /></p>
 
 <p>I again wanted to test the legibility of the text on a dark background after making the lighting and glow modifications. However, instead of just drawing a rectangle and sending it to the bottom of the layer, I created a new later called ‘Alternative Background’, moved that layer to the bottom and then placed the black background within it. This makes switching the background on and off using the layers menu very easy.</p>
 
@@ -1106,46 +1109,46 @@
 
 <p>The resulting image after this transform is much sharper to the eye.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.41.58.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.41.58.png" alt="Alt text" /></p>
 
 <p>After this, I wanted to create a reflection in the horizontal axis, making the logo appear as if it is hovering above a reflective surface. For this, I created a duplicate of everything, copied it into an new reflection layer, and then flipped the duplicate upside down using the button in the top-left of the following screen shot.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.55.28.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.55.28.png" alt="Alt text" /></p>
 
 <p>The duplicate was then moved below the original. Holding the ctrl key while dragging only allows the object to move in one dimension, thus making alignment simple.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.56.19.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 08.56.19.png" alt="Alt text" /></p>
 
 <p>Colour and transparency were modified.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 09.35.54.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 09.35.54.png" alt="Alt text" /></p>
 
 <p>Glow colour, glow amount and other subtle changes were made</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 09.47.53.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 09.47.53.png" alt="Alt text" /></p>
 
 <p>The final image was then ready for export. The first stage in this action was to resize the canvas. In the image properties box, there is a useful too to resize the canvas to mathc the size of the current selection. Seeing as nearly half the selection was transparent in the example shown, the lower margin was tapered in by some pixels</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 09.59.32.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 09.59.32.png" alt="Alt text" /></p>
 
 <p>To export the logo in a useful format such as png, use the “export to bitmap” option in the file menu. the first time that I attempted this action, I used the “save as” option to save the image as a png. However, in doing this, I lost all of the alpha information and so the transparency was all messed up. The “export to bitmap” method gives predictable results.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 09.59.56.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 09.59.56.png" alt="Alt text" /></p>
 
 <p>The final png is shown in the operating system preview pane.</p>
 
-<p><img src="http://audioplastic.org/images/inkscape_logo_tut/Screen shot 2011-07-02 at 10.01.09.png" alt="Alt text" /></p>
+<p><img src="http://audioplastic.github.com/images/inkscape_logo_tut/Screen shot 2011-07-02 at 10.01.09.png" alt="Alt text" /></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[The Matlab publishing tool and Jekyll combined]]></title>
-    <link href="http://audioplastic.org/blog/2011/07/02/matlab-publish-and-jekyll/"/>
+    <link href="http://audioplastic.github.com/blog/2011/07/02/matlab-publish-and-jekyll/"/>
     <updated>2011-07-02T00:00:00+01:00</updated>
-    <id>http://audioplastic.org/blog/2011/07/02/matlab-publish-and-jekyll</id>
+    <id>http://audioplastic.github.com/blog/2011/07/02/matlab-publish-and-jekyll</id>
     <content type="html"><![CDATA[<h2 id="the-matlab-publishing-tool-and-jekyll-combined">The Matlab publishing tool and Jekyll combined</h2>
 
-<p>I am in the middle of generating a set of tailored <a href="http://audioplastic.org/random.html">Matlab tutorials</a> for a colleague. We decided that the best way to communicate the work was by using <a href="http://www.mathworks.com/help/techdoc/ref/publish.html">Matlab’s integrated publishing facility</a>. This is a great tool that allows you to generate HTML pages directly from Matlab scripts. Code is highlighted nicely and screenshots of any figures generated are linked in the generated HTML.</p>
+<p>I am in the middle of generating a set of tailored <a href="http://audioplastic.github.com/random.html">Matlab tutorials</a> for a colleague. We decided that the best way to communicate the work was by using <a href="http://www.mathworks.com/help/techdoc/ref/publish.html">Matlab’s integrated publishing facility</a>. This is a great tool that allows you to generate HTML pages directly from Matlab scripts. Code is highlighted nicely and screenshots of any figures generated are linked in the generated HTML.</p>
 
 <p>I am also a massive <a href="www.dropbox.com">Dropbox</a> fan. This is a file synchronisation service that can act as a static website server. Dropbox has a public folder. The Matlab generated HTML can be dropped into this folder and then the public link to the file can be shared. This makes for a very neat and straight forward way to distribute Matlab published documents. However, there are a couple of very minor drawbacks. Firstly, the static html hosting service provided by Dropbox is more of a side effect of the public folder than a supported service. Dropbox makes no guarantees about service uptime or reliability. This would probably never be a problem for the scenario outlined here, but seeing as I generate this site using Jekyll(https://github.com/mojombo/jekyll/wiki) and host it at <a href="www.github.com">Github</a>, I thought I would try to combine the two.</p>
 
