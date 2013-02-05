@@ -3,7 +3,7 @@ layout: post
 title: "BioAid part 2: From auditory model to hearing aid algorithm"
 date: 2013-01-29 14:54
 comments: false
-published: false
+published: true
 categories: 
 ---
 
