@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "BioAid Post 1: Motivations"
+title: "BioAid part 1: Motivations for building a new class of hearing aid"
 date: 2013-01-24 14:48
 comments: false
 published: true
