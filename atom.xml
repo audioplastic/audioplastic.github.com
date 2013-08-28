@@ -4,7 +4,7 @@
   <title><![CDATA[AudioPlastic]]></title>
   <link href="http://audioplastic.github.com/atom.xml" rel="self"/>
   <link href="http://audioplastic.github.com/"/>
-  <updated>2013-08-23T01:59:46+01:00</updated>
+  <updated>2013-08-28T17:19:53+01:00</updated>
   <id>http://audioplastic.github.com/</id>
   <author>
     <name><![CDATA[Nick Clark]]></name>
@@ -14,11 +14,11 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Introducing Aud1 assistive listening software]]></title>
+    <title type="html"><![CDATA[Introducing AUD-1 assistive listening software]]></title>
     <link href="http://audioplastic.github.com/blog/2013/08/22/introducing-aud1-assistive-listening-software/"/>
     <updated>2013-08-22T00:54:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2013/08/22/introducing-aud1-assistive-listening-software</id>
-    <content type="html"><![CDATA[<p>This is just a brief post to announce that my latest assistive listening software, AUD1, has just been accepted for release on the App Store. Check out <a href="http://www.aud1.com">aud1.com</a> for information related to the app.</p>
+    <content type="html"><![CDATA[<p>This is just a brief post to announce that my latest assistive listening software, AUD-1, has just been accepted for release on the App Store. Check out <a href="http://www.aud1.com">aud1.com</a> for information related to the app.</p>
 
 <p>The app basically turns any iOS device into a hearing aid. It is built on the same core algorithm as the original BioAid app project described in other posts on this blog, but includes numerous enhancements suggested by the user community including, but not limited to:</p>
 
