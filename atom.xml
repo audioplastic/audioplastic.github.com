@@ -4,7 +4,7 @@
   <title><![CDATA[AudioPlastic]]></title>
   <link href="http://audioplastic.github.com/atom.xml" rel="self"/>
   <link href="http://audioplastic.github.com/"/>
-  <updated>2013-08-28T17:19:53+01:00</updated>
+  <updated>2013-09-06T12:41:58+01:00</updated>
   <id>http://audioplastic.github.com/</id>
   <author>
     <name><![CDATA[Nick Clark]]></name>
@@ -12,6 +12,25 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Accurately measuring round-trip audio latency on iOS]]></title>
+    <link href="http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/"/>
+    <updated>2013-09-06T12:02:00+01:00</updated>
+    <id>http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios</id>
+    <content type="html"><![CDATA[<p>Round-trip audio latency is the time taken for the sound to enter a real-time system, be processed by the hardware, and then be reproduced as a processed sound. This figure is particularly important for any application where a user interacts with sound in some way. For example, if you’re using software to simulate a guitar amplifier, you do not want to hear a delay between when you strike the strings, and when you are able to hear the processed output. Too much delay will mess up your performance. I work with assistive listening software that processes environmental sounds for hearing impaired listeners. Just like in the musical example, any delay in such a system will detract from the user experience.</p>
+
+<p>I was recently testing my <a href="www.aud1.com">AUD-1 software</a> on a variety of devices that I had to hand, and noticed what I perceived to be a higher audio latency on the iPod Touch 5th generation. It sounded like there was a greater audio delay than on any other devices that I’d tested. A search on the web revealed relatively little on the subject, apart form a discussion thread on the [Loopy forums] (http://forum.loopyapp.com/discussion/591/help-latency-with-loopy-ipod-touch/p1). Loopy is some pretty neat audio software, an the developer posted a simple method for testing the round-trip audio latency of your setup . . </p>
+
+<iframe width="560" height="315" src="http://audioplastic.github.com//www.youtube.com/embed/UNR_nWlw8Xs?rel=0" frameborder="0" allowfullscreen=""></iframe>
+
+<p>Inspired by this, I baked a latency testing utility right into <a href="www.aud1.com">AUD-1</a>. This allows the user to make accurate latency measurements without the need for an external computer. It also allows the user to test various hardware configurations. See the following video for a demo and some data . . </p>
+
+<iframe width="420" height="315" src="http://audioplastic.github.com//www.youtube.com/embed/C8StPwiHTCc" frameborder="0" allowfullscreen=""></iframe>
+
+<p>For the best results, you want the latency figure to be as low as possible. It needs to be around 10 ms or less not to be a nuisance. Unfortunately, in my tests, I could not get a latency figure of &lt; 50 ms using the 5th generation iPod touch. Maybe this will be fixed in an iOS software update?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Introducing AUD-1 assistive listening software]]></title>

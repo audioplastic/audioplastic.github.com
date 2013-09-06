@@ -9,7 +9,8 @@
   <meta name="author" content="Nick Clark">
 
   
-  <meta name="description" content="Using inkscape vector graphics to generate a website logo This is a quick tutorial showing the steps required to generate a logo like the one seen at &hellip;">
+  <meta name="description" content="I will start posting cool little blocks of code, like short poems when I see neat little things to do .. Find multiples in a vector the C++11 way1
+2 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -104,6 +105,78 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/29/c-plus-plus-11-is-poetic/">C++11 Is Poetic</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-29T16:13:00+00:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/29/c-plus-plus-11-is-poetic/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I will start posting cool little blocks of code, like short poems when I see neat little things to do ..</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Find multiples in a vector the C++11 way</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class="line"><span class="cp">#include &lt;vector&gt;</span>
+</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">int</span> <span class="n">main</span> <span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">	<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span><span class="mi">324</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">65</span><span class="p">,</span><span class="mi">787</span><span class="p">,</span><span class="mi">9</span><span class="p">};</span> <span class="c1">//Uniform initialization</span>
+</span><span class="line">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;In vector: &quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">val</span> <span class="o">:</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span><span class="p">;}</span> <span class="c1">//Range based for</span>
+</span><span class="line">	<span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+</span><span class="line">	<span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="s">&quot;there are &quot;</span>
+</span><span class="line">		<span class="o">&lt;&lt;</span> <span class="n">count_if</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[</span><span class="n">m</span><span class="p">](</span><span class="kt">int</span> <span class="n">i</span><span class="p">){</span><span class="k">return</span> <span class="n">i</span><span class="o">%</span><span class="n">m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;})</span> <span class="c1">//lambdas</span>
+</span><span class="line">		<span class="o">&lt;&lt;</span> <span class="s">&quot; multiples of &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<blockquote><p>In vector: 12, 324, 45, 65, 787, 9, there are 2 multiples of 5</p></blockquote>
+
+<p>For some more depth on the functional goodness see this <a href="http://www.drdobbs.com/cpp/efficient-use-of-lambda-expressions-and/232500059">Dr. Dobbs article</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -349,6 +422,10 @@ p,h1,h2,div.content div {
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/">Accurately measuring round-trip audio latency on iOS</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/08/22/introducing-aud1-assistive-listening-software/">Introducing AUD-1 assistive listening software</a>
       </li>
     
@@ -362,10 +439,6 @@ p,h1,h2,div.content div {
     
       <li class="post">
         <a href="/blog/2013/01/23/matlab-cobalt/">Cobalt theme for Matlab</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/10/AP1/">Audiophile AirPlay with Raspberry Pi: Part 1</a>
       </li>
     
   </ul>

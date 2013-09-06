@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Cobalt theme for Matlab - AudioPlastic</title>
+  <title>Accurately measuring round-trip audio latency on iOS - AudioPlastic</title>
   <meta name="author" content="Nick Clark">
 
   
-  <meta name="description" content="This is a quick post showing how to apply a cobalt-like theme to Matlab’s workspace and editor. Matlab has rather limited font and colour &hellip;">
+  <meta name="description" content="Round-trip audio latency is the time taken for the sound to enter a real-time system, be processed by the hardware, and then be reproduced as a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://audioplastic.github.com/blog/2013/01/23/matlab-cobalt/">
+  <link rel="canonical" href="http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -107,7 +107,7 @@
   
   <header>
     
-      <h1 class="entry-title">Cobalt Theme for Matlab</h1>
+      <h1 class="entry-title">Accurately Measuring Round-trip Audio Latency on iOS</h1>
     
     
       <p class="meta">
@@ -123,7 +123,7 @@
   
 
 
-<time datetime="2013-01-23T16:20:00+00:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time>
+<time datetime="2013-09-06T12:02:00+01:00" pubdate data-updated="true">Sep 6<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -132,57 +132,17 @@
   </header>
 
 
-<div class="entry-content"><p>This is a quick post showing how to apply a cobalt-like theme to Matlab’s workspace and editor. Matlab has rather limited font and colour customization options compared to XCode (<a href="/blog/2013/01/09/cobalt/">see my other post about the Cobalt theme</a>) but it is still possible to change the default theme to something that I personally find a little easier on the eyes.</p>
+<div class="entry-content"><p>Round-trip audio latency is the time taken for the sound to enter a real-time system, be processed by the hardware, and then be reproduced as a processed sound. This figure is particularly important for any application where a user interacts with sound in some way. For example, if you’re using software to simulate a guitar amplifier, you do not want to hear a delay between when you strike the strings, and when you are able to hear the processed output. Too much delay will mess up your performance. I work with assistive listening software that processes environmental sounds for hearing impaired listeners. Just like in the musical example, any delay in such a system will detract from the user experience.</p>
 
-<p>The default Matlab theme (when viewed on a Mac) is shown below &#8230; </p>
+<p>I was recently testing my <a href="www.aud1.com">AUD-1 software</a> on a variety of devices that I had to hand, and noticed what I perceived to be a higher audio latency on the iPod Touch 5th generation. It sounded like there was a greater audio delay than on any other devices that I’d tested. A search on the web revealed relatively little on the subject, apart form a discussion thread on the [Loopy forums] (http://forum.loopyapp.com/discussion/591/help-latency-with-loopy-ipod-touch/p1). Loopy is some pretty neat audio software, an the developer posted a simple method for testing the round-trip audio latency of your setup . . </p>
 
-<p><img src="http://i50.tinypic.com/10rq15s.png" alt="raw" /></p>
+<iframe width="560" height="315" src="//www.youtube.com/embed/UNR_nWlw8Xs?rel=0" frameborder="0" allowfullscreen=""></iframe>
 
-<p>The end result is this &#8230;</p>
+<p>Inspired by this, I baked a latency testing utility right into <a href="www.aud1.com">AUD-1</a>. This allows the user to make accurate latency measurements without the need for an external computer. It also allows the user to test various hardware configurations. See the following video for a demo and some data . . </p>
 
-<p><img src="http://i50.tinypic.com/2rqd07m.png" alt="cobalt" /></p>
+<iframe width="420" height="315" src="//www.youtube.com/embed/C8StPwiHTCc" frameborder="0" allowfullscreen=""></iframe>
 
-<p>If you like the look of this, make a file called matlab.prf containing the text at the end of this post. Navigate to the folder containing the original matlab.prf, make a backup of the original file and replace it with the new version. In *nix systems, this file is located in &#8230;</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">$HOME/.matlab/&lt;version&gt;/matlab.prf. 	</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Below is the config text  &#8230;</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">#MATLAB Preferences
-</span><span class="line">#Wed Jan 23 15:55:28 GMT 2013
-</span><span class="line">Color_CmdWinWarnings=C-39936
-</span><span class="line">Color_CmdWinErrors=C-1703936
-</span><span class="line">Colors_M_UnterminatedStrings=C-5111808
-</span><span class="line">Colors_M_SystemCommands=C-16022329
-</span><span class="line">ColorsBackground=C-16701878
-</span><span class="line">Colors_M_Warnings=C-27648
-</span><span class="line">ColorsText=C-1
-</span><span class="line">Colors_M_Errors=C-65536
-</span><span class="line">Colors_M_Keywords=C-20124
-</span><span class="line">Colors_HTML_HTMLLinks=C-16711681
-</span><span class="line">Colors_M_Strings=C-16711936
-</span><span class="line">ColorsUseMLintAutoFixBackground=Btrue
-</span><span class="line">Colors_M_Comments=C-16711681
-</span><span class="line">ColorsUseSystem=Bfalse
-</span><span class="line">Desktop.Font.Code=F0 12 Monaco</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>For the best results, you want the latency figure to be as low as possible. It needs to be around 10 ms or less not to be a nuisance. Unfortunately, in my tests, I could not get a latency figure of &lt; 50 ms using the 5th generation iPod touch. Maybe this will be fixed in an iOS software update?</p>
 </div>
 
 
@@ -205,7 +165,7 @@
   
 
 
-<time datetime="2013-01-23T16:20:00+00:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time>
+<time datetime="2013-09-06T12:02:00+01:00" pubdate data-updated="true">Sep 6<span>th</span>, 2013</time>
       
 
 
@@ -213,7 +173,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.github.com/blog/2013/01/23/matlab-cobalt/" data-via="audioplastic" data-counturl="http://audioplastic.github.com/blog/2013/01/23/matlab-cobalt/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/" data-via="audioplastic" data-counturl="http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -226,10 +186,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/01/10/AP1/" title="Previous Post: Audiophile AirPlay with Raspberry Pi: Part 1">&laquo; Audiophile AirPlay with Raspberry Pi: Part 1</a>
+        <a class="basic-alignment left" href="/blog/2013/08/22/introducing-aud1-assistive-listening-software/" title="Previous Post: Introducing AUD-1 assistive listening software">&laquo; Introducing AUD-1 assistive listening software</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/01/24/bioaid-algo/" title="Next Post: BioAid part 1: Motivations for building a new class of hearing aid">BioAid part 1: Motivations for building a new class of hearing aid &raquo;</a>
       
     </p>
   </footer>
@@ -312,8 +270,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://audioplastic.github.com/blog/2013/01/23/matlab-cobalt/';
-        var disqus_url = 'http://audioplastic.github.com/blog/2013/01/23/matlab-cobalt/';
+        var disqus_identifier = 'http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/';
+        var disqus_url = 'http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/';
         var disqus_script = 'embed.js';
       
     (function () {

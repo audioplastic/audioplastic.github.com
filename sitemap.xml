@@ -55,11 +55,17 @@
         <lastmod>2013-08-28T17:19:45+01:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/
+        </loc>
+        <lastmod>2013-09-06T12:41:37+01:00</lastmod>
+    </url>
+    <url>
         <loc>http://audioplastic.github.com/blog/archives/</loc>
-        <lastmod>2013-08-28T17:19:45+01:00</lastmod>
+        <lastmod>2013-09-06T12:41:37+01:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/</loc>
-        <lastmod>2013-08-28T17:19:45+01:00</lastmod>
+        <lastmod>2013-09-06T12:41:37+01:00</lastmod>
     </url>
 </urlset>

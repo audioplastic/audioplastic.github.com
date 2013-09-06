@@ -9,7 +9,7 @@
   <meta name="author" content="Nick Clark">
 
   
-  <meta name="description" content="This is just a brief post to announce that my latest assistive listening software, AUD-1, has just been accepted for release on the App Store. Check &hellip;">
+  <meta name="description" content="Round-trip audio latency is the time taken for the sound to enter a real-time system, be processed by the hardware, and then be reproduced as a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -104,6 +104,54 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/">Accurately Measuring Round-trip Audio Latency on iOS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-06T12:02:00+01:00" pubdate data-updated="true">Sep 6<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Round-trip audio latency is the time taken for the sound to enter a real-time system, be processed by the hardware, and then be reproduced as a processed sound. This figure is particularly important for any application where a user interacts with sound in some way. For example, if you’re using software to simulate a guitar amplifier, you do not want to hear a delay between when you strike the strings, and when you are able to hear the processed output. Too much delay will mess up your performance. I work with assistive listening software that processes environmental sounds for hearing impaired listeners. Just like in the musical example, any delay in such a system will detract from the user experience.</p>
+
+<p>I was recently testing my <a href="www.aud1.com">AUD-1 software</a> on a variety of devices that I had to hand, and noticed what I perceived to be a higher audio latency on the iPod Touch 5th generation. It sounded like there was a greater audio delay than on any other devices that I’d tested. A search on the web revealed relatively little on the subject, apart form a discussion thread on the [Loopy forums] (http://forum.loopyapp.com/discussion/591/help-latency-with-loopy-ipod-touch/p1). Loopy is some pretty neat audio software, an the developer posted a simple method for testing the round-trip audio latency of your setup . . </p>
+
+<iframe width="560" height="315" src="//www.youtube.com/embed/UNR_nWlw8Xs?rel=0" frameborder="0" allowfullscreen=""></iframe>
+
+<p>Inspired by this, I baked a latency testing utility right into <a href="www.aud1.com">AUD-1</a>. This allows the user to make accurate latency measurements without the need for an external computer. It also allows the user to test various hardware configurations. See the following video for a demo and some data . . </p>
+
+<iframe width="420" height="315" src="//www.youtube.com/embed/C8StPwiHTCc" frameborder="0" allowfullscreen=""></iframe>
+
+<p>For the best results, you want the latency figure to be as low as possible. It needs to be around 10 ms or less not to be a nuisance. Unfortunately, in my tests, I could not get a latency figure of &lt; 50 ms using the 5th generation iPod touch. Maybe this will be fixed in an iOS software update?</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1483,78 +1531,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/11/29/c-plus-plus-11-is-poetic/">C++11 Is Poetic</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-29T16:13:00+00:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/11/29/c-plus-plus-11-is-poetic/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I will start posting cool little blocks of code, like short poems when I see neat little things to do ..</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Find multiples in a vector the C++11 way</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include &lt;iostream&gt;</span>
-</span><span class="line"><span class="cp">#include &lt;vector&gt;</span>
-</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span><span class="line">
-</span><span class="line"><span class="kt">int</span> <span class="n">main</span> <span class="p">()</span>
-</span><span class="line"><span class="p">{</span>
-</span><span class="line">	<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span><span class="mi">324</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">65</span><span class="p">,</span><span class="mi">787</span><span class="p">,</span><span class="mi">9</span><span class="p">};</span> <span class="c1">//Uniform initialization</span>
-</span><span class="line">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;In vector: &quot;</span><span class="p">;</span>
-</span><span class="line">	<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">val</span> <span class="o">:</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span><span class="p">;}</span> <span class="c1">//Range based for</span>
-</span><span class="line">	<span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span><span class="line">	<span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="s">&quot;there are &quot;</span>
-</span><span class="line">		<span class="o">&lt;&lt;</span> <span class="n">count_if</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[</span><span class="n">m</span><span class="p">](</span><span class="kt">int</span> <span class="n">i</span><span class="p">){</span><span class="k">return</span> <span class="n">i</span><span class="o">%</span><span class="n">m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;})</span> <span class="c1">//lambdas</span>
-</span><span class="line">		<span class="o">&lt;&lt;</span> <span class="s">&quot; multiples of &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class="line"><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<blockquote><p>In vector: 12, 324, 45, 65, 787, 9, there are 2 multiples of 5</p></blockquote>
-
-<p>For some more depth on the functional goodness see this <a href="http://www.drdobbs.com/cpp/efficient-use-of-lambda-expressions-and/232500059">Dr. Dobbs article</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1570,6 +1546,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/">Accurately measuring round-trip audio latency on iOS</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/08/22/introducing-aud1-assistive-listening-software/">Introducing AUD-1 assistive listening software</a>
       </li>
     
@@ -1583,10 +1563,6 @@
     
       <li class="post">
         <a href="/blog/2013/01/23/matlab-cobalt/">Cobalt theme for Matlab</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/10/AP1/">Audiophile AirPlay with Raspberry Pi: Part 1</a>
       </li>
     
   </ul>
