@@ -244,3 +244,5 @@ The AirPlay service will now start whenever the RPi is powered on.
 In the next installment of this blog series, I will attempt to interface the Raspberry Pi with a [Schiit Modi](http://schiit.com/cart/index.php?main_page=product_info&cPath=0&products_id=14) dedicated USB DAC. I have one on order from the manufacturer in the USA (it is currently in the post). These are supposed to provide incredible sound quality for the price. the problem with the xFi is that it tires to do too much (optical / audio in / headphone amp). the Modi just has a USB input and a stereo line level analogue output. As an AipPlay device for use with the Raspberry Pi, no money (or size) is wasted on superfluous functionality. 
 
 In the next installment, I also intend to some controlled tests to compare the setup's sound quality to an Apple TV. I'll do this with a number of listeners. I'm excited to find out what happens!
+
+UPDATE: Seeing as this post generates the most traffic on my blog, I'd like to add a shameless plug [www.aud1.com](http://www.aud1.com) to my latest project. 
