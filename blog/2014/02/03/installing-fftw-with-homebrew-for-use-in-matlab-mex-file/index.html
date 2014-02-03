@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Installing FFTW with homebrew for static linking in Matlab mex file - AudioPlastic</title>
+  <title>Installing FFTW using homebrew on OSX when you want to statically link a Matlab mex file - AudioPlastic</title>
   <meta name="author" content="Nick Clark">
 
   
@@ -107,7 +107,7 @@
   
   <header>
     
-      <h1 class="entry-title">Installing FFTW With Homebrew for Static Linking in Matlab Mex File</h1>
+      <h1 class="entry-title">Installing FFTW Using Homebrew on OSX When You Want to Statically Link a Matlab Mex File</h1>
     
     
       <p class="meta">
@@ -132,7 +132,7 @@
   </header>
 
 
-<div class="entry-content"><p>I’ve been playing with implementing and benchmarking various FFT implementations as Matlab mex files under OSX. I use the excellent <a href="http://brew.sh/">homebrew</a> as my package management system. I wanted to compare the vDSP FFT routines from the Apple Accelerate framework against FFTW3. Installing FFTW3 is as simple as typing <code>brew install fftw</code> from the command line. However, when linking fftw against the mex file, the mex tool will always want to dynamically link the library. Now it is possible to add <code>-static</code> to your linker flags in the <code>mexopts.sh</code> file (found in <code>~/.your_matlab_version/mexopts.sh</code>), but then this will then break the build if you try to include the Accelerate framework simultaneously. Hmmmm.</p>
+<div class="entry-content"><p>I’ve been playing with implementing and benchmarking various FFT implementations as Matlab mex files under OSX. I use the excellent <a href="http://brew.sh/">homebrew</a> as my package management system. I wanted to compare the <a href="https://developer.apple.com/library/Mac/documentation/Performance/Conceptual/vDSP_Programming_Guide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40005147-CH1-SW1">vDSP FFT routines from the Apple Accelerate framework</a> against <a href="http://www.fftw.org">FFTW</a>. Installing FFTW is as simple as typing <code>brew install fftw</code> from the command line. However, when linking fftw against the mex file, the mex compiler tool in Matlab will always want to dynamically link the library (think version problems and other <a href="http://www.urbandictionary.com/define.php?term=PITA">P.I.T.A.</a>). Now it is possible to add <code>-static</code> to your linker flags in the <code>mexopts.sh</code> file (found in <code>~/.your_matlab_version/mexopts.sh</code>), but then this will then break the build if you try to include the Accelerate framework simultaneously (see <a href="http://audioplastic.org/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/">previous post</a>). Hmmmm.</p>
 
 <p>Luckily, it is super easy to edit a brew formula. From the terminal, just type brew edit fftw. This brings up the formula details. From here it is possible to remove all of the dynamic linking options by just removing the flags in the <code>args</code> variable, so your formula ends up looking like this &#8230;</p>
 
@@ -238,7 +238,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/">Installing FFTW with homebrew for static linking in Matlab mex file</a>
+        <a href="/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/">Installing FFTW using homebrew on OSX when you want to statically link a Matlab mex file</a>
       </li>
     
       <li class="post">
