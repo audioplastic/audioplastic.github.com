@@ -171,6 +171,13 @@
 </span><span class="line"><span class="nv">CXXDEBUGFLAGS</span><span class="o">=</span><span class="s1">&#39;-g&#39;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
+<p>You can also use apple frameworks in your mex files, but there is no flag available for the mex tool that lets you do this from the command line. If you want to use useful stuff like the Accelerate Framework, a little more <code>mexopts.sh</code> tinkering needs to be done. Edit the following flags so they look like the ones shown &#8230;</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>mexopts.sh framework additions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">CLIBS</span><span class="o">=</span><span class="s2">&quot;$CLIBS -lstdc++ -framework Accelerate&quot;</span>
+</span><span class="line"><span class="nv">CXXLIBS</span><span class="o">=</span><span class="s2">&quot;$MLIBS -lstdc++ -framework Accelerate&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 </div>
   
   

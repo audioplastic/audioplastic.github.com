@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Matlab | AudioPlastic]]></title>
   <link href="http://audioplastic.github.com/blog/categories/matlab/atom.xml" rel="self"/>
   <link href="http://audioplastic.github.com/"/>
-  <updated>2014-02-03T16:46:29+00:00</updated>
+  <updated>2014-02-03T17:11:21+00:00</updated>
   <id>http://audioplastic.github.com/</id>
   <author>
     <name><![CDATA[Nick Clark]]></name>
@@ -40,6 +40,13 @@ CXXDEBUGFLAGS=’-g’ </p>
 
 <p>```</p>
 
+<p>You can also use apple frameworks in your mex files, but there is no flag available for the mex tool that lets you do this from the command line. If you want to use useful stuff like the Accelerate Framework, a little more <code>mexopts.sh</code> tinkering needs to be done. Edit the following flags so they look like the ones shown . . .</p>
+
+<p>```sh mexopts.sh framework additions
+CLIBS=”$CLIBS -lstdc++ -framework Accelerate” 
+CXXLIBS=”$MLIBS -lstdc++ -framework Accelerate”</p>
+
+<p>```</p>
 ]]></content>
   </entry>
   
