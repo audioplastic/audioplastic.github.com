@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Matlab | AudioPlastic]]></title>
+  <link href="http://audioplastic.github.com/blog/categories/matlab/atom.xml" rel="self"/>
+  <link href="http://audioplastic.github.com/"/>
+  <updated>2014-02-03T16:46:29+00:00</updated>
+  <id>http://audioplastic.github.com/</id>
+  <author>
+    <name><![CDATA[Nick Clark]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab]]></title>
+    <link href="http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/"/>
+    <updated>2014-02-03T16:26:00+00:00</updated>
+    <id>http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab</id>
+    <content type="html"><![CDATA[<p>So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab executables files as compiler related stuff has moved and version numbers have changed. Thankfully, the fix is relatively simple. Just locate mexopts.sh, which can be found in <code>~/your_old_matlab_version/mexopts.sh</code>, and open it with your favorite editor. Search for <code>maci64)</code> and then comment out everything related to the C compiler in this shell script block. This is probably everything from the line, <code>CC=...</code> to the line, <code>CXXDEBUGFLAGS=...</code> Now just prefix the commented block with this substitute.</p>
+
+<p>```sh mexopts.sh additions
+CC=’llvm-gcc’<br />
+SDKROOT=’/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk’<br />
+MACOSX_DEPLOYMENT_TARGET=’10.9’<br />
+ARCHS=’x86_64’<br />
+CFLAGS=”-fno-common -no-cpp-precomp -arch $ARCHS -isysroot $SDKROOT -mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET”<br />
+CFLAGS=”$CFLAGS -fexceptions”<br />
+CLIBS=”$MLIBS”<br />
+COPTIMFLAGS=’-O2 -DNDEBUG’<br />
+CDEBUGFLAGS=’-g’  </p>
+
+<p>CLIBS=”$CLIBS -lstdc++” 
+CXX=’llvm-g++’
+CXXFLAGS=”-fno-common -fexceptions -arch $ARCHS -isysroot $SDKROOT -mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET”
+CXXLIBS=”$MLIBS -lstdc++”
+CXXOPTIMFLAGS=’-O2 -DNDEBUG’
+CXXDEBUGFLAGS=’-g’ </p>
+
+<p>```</p>
+
+]]></content>
+  </entry>
+  
+</feed>

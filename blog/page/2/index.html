@@ -9,8 +9,7 @@
   <meta name="author" content="Nick Clark">
 
   
-  <meta name="description" content="I will start posting cool little blocks of code, like short poems when I see neat little things to do .. Find multiples in a vector the C++11 way1
-2 &hellip;">
+  <meta name="description" content="An interesting question popped up on stackoverflow about palindrome detection in c++. A palindrome is a word whose characters can be reversed, and no &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -105,6 +104,86 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/30/c-plus-plus-palindrome-detection/">C++ Palindrome Detection</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-30T16:11:00+00:00" pubdate data-updated="true">Nov 30<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/30/c-plus-plus-palindrome-detection/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>An interesting question popped up on stackoverflow about palindrome detection in c++. A palindrome is a word whose characters can be reversed, and no change is detectable, e.g. “racecar”. My initial thought was to make a copy and use the std::reverse algorithm &#8230; </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">tupni</span> <span class="o">=</span> <span class="n">input</span><span class="p">;</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">reverse</span><span class="p">(</span><span class="n">tupni</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">tupni</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+</span><span class="line">
+</span><span class="line"><span class="k">if</span><span class="p">(</span><span class="n">tupni</span><span class="o">==</span><span class="n">input</span><span class="p">){</span> <span class="p">...</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>However, this copy can be avoided using reverse itterators . . </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">bool</span> <span class="n">isPalindrome</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="c1">// comparison based on 2 string iterators - a &quot;normal&quot; one</span>
+</span><span class="line">    <span class="c1">// and a reversed one</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">equal</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">rbegin</span><span class="p">(),</span> <span class="n">str</span><span class="p">.</span><span class="n">rend</span><span class="p">(),</span> <span class="n">str</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Seeing as this function only contains a single command, it might be nice to use a lambda as an alternative. You can specify a return type from a lambda with this syntax </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[]()-&gt;return_type{}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>So defining the palindrome detector becomes a simple 1-liner.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">auto</span> <span class="n">isPalindrome</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">bool</span><span class="p">{</span><span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">equal</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">rbegin</span><span class="p">(),</span> <span class="n">str</span><span class="p">.</span><span class="n">rend</span><span class="p">(),</span> <span class="n">str</span><span class="p">.</span><span class="n">begin</span><span class="p">());};</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">isPalindrome</span><span class="p">(</span><span class="s">&quot;racecar&quot;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// prints 1</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">isPalindrome</span><span class="p">(</span><span class="s">&quot;truck&quot;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// prints 0 </span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -422,6 +501,10 @@ p,h1,h2,div.content div {
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/">Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/">Accurately measuring round-trip audio latency on iOS</a>
       </li>
     
@@ -435,10 +518,6 @@ p,h1,h2,div.content div {
     
       <li class="post">
         <a href="/blog/2013/01/24/bioaid-algo/">BioAid part 1: Motivations for building a new class of hearing aid</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/23/matlab-cobalt/">Cobalt theme for Matlab</a>
       </li>
     
   </ul>
@@ -471,7 +550,7 @@ p,h1,h2,div.content div {
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Nick Clark -
+  Copyright &copy; 2014 - Nick Clark -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

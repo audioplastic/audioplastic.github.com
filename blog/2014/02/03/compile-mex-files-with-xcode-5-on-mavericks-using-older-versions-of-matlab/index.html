@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>The Matlab publishing tool and Jekyll combined - AudioPlastic</title>
+  <title>Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab - AudioPlastic</title>
   <meta name="author" content="Nick Clark">
 
   
-  <meta name="description" content="The Matlab publishing tool and Jekyll combined I am in the middle of generating a set of tailored Matlab tutorials for a colleague. We decided that &hellip;">
+  <meta name="description" content="So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://audioplastic.github.com/blog/2011/07/02/matlab-publish-and-jekyll/">
+  <link rel="canonical" href="http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -107,7 +107,7 @@
   
   <header>
     
-      <h1 class="entry-title">The Matlab Publishing Tool and Jekyll Combined</h1>
+      <h1 class="entry-title">Compile Mex Files With XCode 5 on OSX Mavericks Using Older Versions of Matlab</h1>
     
     
       <p class="meta">
@@ -123,7 +123,7 @@
   
 
 
-<time datetime="2011-07-02T00:00:00+01:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2011</time>
+<time datetime="2014-02-03T16:26:00+00:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -132,52 +132,42 @@
   </header>
 
 
-<div class="entry-content"><h2 id="the-matlab-publishing-tool-and-jekyll-combined">The Matlab publishing tool and Jekyll combined</h2>
+<div class="entry-content"><p>So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab executables files as compiler related stuff has moved and version numbers have changed. Thankfully, the fix is relatively simple. Just locate mexopts.sh, which can be found in <code>~/your_old_matlab_version/mexopts.sh</code>, and open it with your favorite editor. Search for <code>maci64)</code> and then comment out everything related to the C compiler in this shell script block. This is probably everything from the line, <code>CC=...</code> to the line, <code>CXXDEBUGFLAGS=...</code> Now just prefix the commented block with this substitute.</p>
 
-<p>I am in the middle of generating a set of tailored <a href="/random.html">Matlab tutorials</a> for a colleague. We decided that the best way to communicate the work was by using <a href="http://www.mathworks.com/help/techdoc/ref/publish.html">Matlab’s integrated publishing facility</a>. This is a great tool that allows you to generate HTML pages directly from Matlab scripts. Code is highlighted nicely and screenshots of any figures generated are linked in the generated HTML.</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>mexopts.sh additions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">CC</span><span class="o">=</span><span class="s1">&#39;llvm-gcc&#39;</span>
+</span><span class="line"><span class="nv">SDKROOT</span><span class="o">=</span><span class="s1">&#39;/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&#39;</span>
+</span><span class="line"><span class="nv">MACOSX_DEPLOYMENT_TARGET</span><span class="o">=</span><span class="s1">&#39;10.9&#39;</span>
+</span><span class="line"><span class="nv">ARCHS</span><span class="o">=</span><span class="s1">&#39;x86_64&#39;</span>
+</span><span class="line"><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">&quot;-fno-common -no-cpp-precomp -arch $ARCHS -isysroot $SDKROOT -mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET&quot;</span>
+</span><span class="line"><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">&quot;$CFLAGS -fexceptions&quot;</span>
+</span><span class="line"><span class="nv">CLIBS</span><span class="o">=</span><span class="s2">&quot;$MLIBS&quot;</span>
+</span><span class="line"><span class="nv">COPTIMFLAGS</span><span class="o">=</span><span class="s1">&#39;-O2 -DNDEBUG&#39;</span>
+</span><span class="line"><span class="nv">CDEBUGFLAGS</span><span class="o">=</span><span class="s1">&#39;-g&#39;</span>
+</span><span class="line">
+</span><span class="line"><span class="nv">CLIBS</span><span class="o">=</span><span class="s2">&quot;$CLIBS -lstdc++&quot;</span>
+</span><span class="line"><span class="nv">CXX</span><span class="o">=</span><span class="s1">&#39;llvm-g++&#39;</span>
+</span><span class="line"><span class="nv">CXXFLAGS</span><span class="o">=</span><span class="s2">&quot;-fno-common -fexceptions -arch $ARCHS -isysroot $SDKROOT -mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET&quot;</span>
+</span><span class="line"><span class="nv">CXXLIBS</span><span class="o">=</span><span class="s2">&quot;$MLIBS -lstdc++&quot;</span>
+</span><span class="line"><span class="nv">CXXOPTIMFLAGS</span><span class="o">=</span><span class="s1">&#39;-O2 -DNDEBUG&#39;</span>
+</span><span class="line"><span class="nv">CXXDEBUGFLAGS</span><span class="o">=</span><span class="s1">&#39;-g&#39;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>I am also a massive <a href="www.dropbox.com">Dropbox</a> fan. This is a file synchronisation service that can act as a static website server. Dropbox has a public folder. The Matlab generated HTML can be dropped into this folder and then the public link to the file can be shared. This makes for a very neat and straight forward way to distribute Matlab published documents. However, there are a couple of very minor drawbacks. Firstly, the static html hosting service provided by Dropbox is more of a side effect of the public folder than a supported service. Dropbox makes no guarantees about service uptime or reliability. This would probably never be a problem for the scenario outlined here, but seeing as I generate this site using Jekyll(https://github.com/mojombo/jekyll/wiki) and host it at <a href="www.github.com">Github</a>, I thought I would try to combine the two.</p>
-
-<p>This turns out to be incredibly simple. All you need to do is copy the “HTML” folder generated by Matlab into the root directory or any new subdirectory of your Jekyll project. You can then just add the <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front matter</a> to the top of the HTML file. In my case the following &#8230; </p>
-
-<pre><code>---
-layout: main
-title: Tutorial xyz
----
-</code></pre>
-
-<p>&#8230; and then Jekyll will render the Matlab published document in your site. The problem is that the Matlab HTML file will likely override some of your own CSS, and so the formatting may be a little off. However, this is very simple to rectify. In my case, I just deleted the following block of code.</p>
-
-<pre><code>body {
-  background-color: white;
-  margin:10px;
-}
-
-h1 {
-  color: #990000; 
-  font-size: x-large;
-}
-
-h2 {
-  color: #990000;
-  font-size: medium;
-}
-
-/* Make the text shrink to fit narrow windows, but not stretch too far in 
-wide windows. */ 
-p,h1,h2,div.content div {
-  max-width: 600px;
-  /* Hack for IE6 */
-  width: auto !important; width: 600px;
-}
-</code></pre>
-
-<p>I left the rest in, as I quite like he Matlab code formatting. It differentiates the code blocks in the Matlab pages from the code blocks in the blog. If you don’t want to give the mathworks any free advertising you can remove the following too.</p>
-
-<pre><code>&lt;p class="footer"&gt;&lt;br&gt;Published with MATLAB&amp;reg; 7.10&lt;br&gt;&lt;/p&gt;
-</code></pre>
-
-<p>Happy static site generating!</p>
 </div>
 
 
@@ -200,15 +190,21 @@ p,h1,h2,div.content div {
   
 
 
-<time datetime="2011-07-02T00:00:00+01:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2011</time>
+<time datetime="2014-02-03T16:26:00+00:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/matlab/'>Matlab</a>, <a class='category' href='/blog/categories/complier-/'>complier,</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.github.com/blog/2011/07/02/matlab-publish-and-jekyll/" data-via="audioplastic" data-counturl="http://audioplastic.github.com/blog/2011/07/02/matlab-publish-and-jekyll/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/" data-via="audioplastic" data-counturl="http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -221,12 +217,18 @@ p,h1,h2,div.content div {
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/" title="Previous Post: Accurately measuring round-trip audio latency on iOS">&laquo; Accurately measuring round-trip audio latency on iOS</a>
       
-        <a class="basic-alignment right" href="/blog/2011/07/03/inkscape-logo/" title="Next Post: Using inkscape vector graphics to generate a website logo">Using inkscape vector graphics to generate a website logo &raquo;</a>
       
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -298,7 +300,10 @@ p,h1,h2,div.content div {
       var disqus_shortname = 'audioplasticblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/';
+        var disqus_url = 'http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
