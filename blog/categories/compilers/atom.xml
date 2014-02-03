@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: compilers | AudioPlastic]]></title>
+  <link href="http://audioplastic.github.com/blog/categories/compilers/atom.xml" rel="self"/>
+  <link href="http://audioplastic.github.com/"/>
+  <updated>2014-02-03T19:50:51+00:00</updated>
+  <id>http://audioplastic.github.com/</id>
+  <author>
+    <name><![CDATA[Nick Clark]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Installing FFTW with homebrew for static linking in Matlab mex file]]></title>
+    <link href="http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/"/>
+    <updated>2014-02-03T19:32:00+00:00</updated>
+    <id>http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file</id>
+    <content type="html"><![CDATA[<p>I’ve been playing with implementing and benchmarking various FFT implementations as Matlab mex files under OSX. I use the excellent <a href="http://brew.sh/">homebrew</a> as my package management system. I wanted to compare the vDSP FFT routines from the Apple Accelerate framework against FFTW3. Installing FFTW3 is as simple as typing <code>brew install fftw</code> from the command line. However, when linking fftw against the mex file, the mex tool will always want to dynamically link the library. Now it is possible to add <code>-static</code> to your linker flags in the <code>mexopts.sh</code> file (found in <code>~/.your_matlab_version/mexopts.sh</code>), but then this will then break the build if you try to include the Accelerate framework simultaneously. Hmmmm.</p>
+
+<p>Luckily, it is super easy to edit a brew formula. From the terminal, just type brew edit fftw. This brings up the formula details. From here it is possible to remove all of the dynamic linking options by just removing the flags in the <code>args</code> variable, so your formula ends up looking like this . . .</p>
+
+<p>```sh fftw formula
+require ‘formula’</p>
+
+<p>class Fftw &lt; Formula
+  homepage ‘http://www.fftw.org’
+  url ‘http://www.fftw.org/fftw-3.3.3.tar.gz’
+  sha1 ‘11487180928d05746d431ebe7a176b52fe205cf9’</p>
+
+<p>option “with-fortran”, “Enable Fortran bindings”</p>
+
+<p>depends_on :fortran =&gt; :optional</p>
+
+<p>def install
+    args = []
+	…</p>
+
+<p>```</p>
+
+<p>After removing and reinstalling fftw, matlab will automatically statically link it against the mex file. Perhaps not the most elegant solution, but a simple solution nonetheless. </p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -9,7 +9,7 @@
   <meta name="author" content="Nick Clark">
 
   
-  <meta name="description" content="So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab &hellip;">
+  <meta name="description" content="I’ve been playing with implementing and benchmarking various FFT implementations as Matlab mex files under OSX. I use the excellent homebrew as my &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,6 +110,78 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/">Installing FFTW With Homebrew for Static Linking in Matlab Mex File</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T19:32:00+00:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+         | <a href="/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I’ve been playing with implementing and benchmarking various FFT implementations as Matlab mex files under OSX. I use the excellent <a href="http://brew.sh/">homebrew</a> as my package management system. I wanted to compare the vDSP FFT routines from the Apple Accelerate framework against FFTW3. Installing FFTW3 is as simple as typing <code>brew install fftw</code> from the command line. However, when linking fftw against the mex file, the mex tool will always want to dynamically link the library. Now it is possible to add <code>-static</code> to your linker flags in the <code>mexopts.sh</code> file (found in <code>~/.your_matlab_version/mexopts.sh</code>), but then this will then break the build if you try to include the Accelerate framework simultaneously. Hmmmm.</p>
+
+<p>Luckily, it is super easy to edit a brew formula. From the terminal, just type brew edit fftw. This brings up the formula details. From here it is possible to remove all of the dynamic linking options by just removing the flags in the <code>args</code> variable, so your formula ends up looking like this &#8230;</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>fftw formula</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">require <span class="s1">&#39;formula&#39;</span>
+</span><span class="line">
+</span><span class="line">class Fftw &lt; Formula
+</span><span class="line">  homepage <span class="s1">&#39;http://www.fftw.org&#39;</span>
+</span><span class="line">  url <span class="s1">&#39;http://www.fftw.org/fftw-3.3.3.tar.gz&#39;</span>
+</span><span class="line">  sha1 <span class="s1">&#39;11487180928d05746d431ebe7a176b52fe205cf9&#39;</span>
+</span><span class="line">
+</span><span class="line">  option <span class="s2">&quot;with-fortran&quot;</span>, <span class="s2">&quot;Enable Fortran bindings&quot;</span>
+</span><span class="line">
+</span><span class="line">  depends_on :fortran <span class="o">=</span>&gt; :optional
+</span><span class="line">
+</span><span class="line">  def install
+</span><span class="line">    <span class="nv">args</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class="line">	...
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>After removing and reinstalling fftw, matlab will automatically statically link it against the mex file. Perhaps not the most elegant solution, but a simple solution nonetheless. </p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/">Compile Mex Files With XCode 5 on OSX Mavericks Using Older Versions of Matlab</a></h1>
     
     
@@ -135,7 +207,9 @@
   </header>
 
 
-  <div class="entry-content"><p>So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab executables files as compiler related stuff has moved and version numbers have changed. Thankfully, the fix is relatively simple. Just locate mexopts.sh, which can be found in <code>~/your_old_matlab_version/mexopts.sh</code>, and open it with your favorite editor. Search for <code>maci64)</code> and then comment out everything related to the C compiler in this shell script block. This is probably everything from the line, <code>CC=...</code> to the line, <code>CXXDEBUGFLAGS=...</code> Now just prefix the commented block with this substitute.</p>
+  <div class="entry-content"><p>So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab executables files as compiler related stuff has moved and version numbers have changed. Thankfully, the fix is relatively simple. I have tried this using 2011b (which is quite out of date now), but I’m guessing that this fix will work for most Matlab versions.</p>
+
+<p>Just locate mexopts.sh, which can be found in <code>~/.your_old_matlab_version/mexopts.sh</code>, and open it with your favorite editor. Search for <code>maci64)</code> and then comment out everything related to the C compiler in this shell script block. This is probably everything from the line, <code>CC=...</code> to the line, <code>CXXDEBUGFLAGS=...</code> Now just prefix the commented block with this substitute.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>mexopts.sh additions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -1429,108 +1503,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii/">Matlab-like Profiling in C++ Using RAII</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-31T15:59:00+00:00" pubdate data-updated="true">Dec 31<span>st</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I’ve always liked the ability to rapidly profile code snippets in Matlab using the ‘tic’ and ‘toc’ commands. I wanted to develop something equally as simple to use in C++ for rapid tests. It turns out that a particularly elegant way to do this is to use RAII techniques, allowing easy profiling of any commands within a scope. A time marker is made on construction, and another time marker is made on destruction, and then compared to the original time marker.</p>
-
-<p>The new ‘chrono’ classes bundles in the C++11 standard library make this task particularly simple. Below is the full class for simple tic toc type profiling …</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="c1">// TicToc RAII profiler</span>
-</span><span class="line"><span class="k">class</span> <span class="nc">TicToc</span>
-</span><span class="line"><span class="p">{</span>
-</span><span class="line"><span class="k">private</span><span class="o">:</span>
-</span><span class="line">    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span> <span class="n">clock</span><span class="p">;</span>
-</span><span class="line">    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">microseconds</span> <span class="n">res</span><span class="p">;</span>
-</span><span class="line">    <span class="n">clock</span><span class="o">::</span><span class="n">time_point</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">;</span>
-</span><span class="line">
-</span><span class="line"><span class="k">public</span><span class="o">:</span>
-</span><span class="line">    <span class="n">TicToc</span><span class="p">()</span> <span class="p">{</span>
-</span><span class="line">        <span class="n">t1</span> <span class="o">=</span> <span class="n">clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
-</span><span class="line">    <span class="p">}</span>
-</span><span class="line">
-</span><span class="line">    <span class="o">~</span><span class="n">TicToc</span><span class="p">()</span>
-</span><span class="line">    <span class="p">{</span>
-</span><span class="line">        <span class="n">t2</span> <span class="o">=</span> <span class="n">clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
-</span><span class="line">        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Elapsed time is &quot;</span>
-</span><span class="line">        <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration_cast</span><span class="o">&lt;</span><span class="n">res</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">).</span><span class="n">count</span><span class="p">()</span><span class="o">/</span><span class="mf">1e6</span>
-</span><span class="line">        <span class="o">&lt;&lt;</span> <span class="s">&quot; seconds.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-</span><span class="line">    <span class="p">}</span>
-</span><span class="line"><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Putting this to use is very simple. Just make a new scope using the scope resolution operator and create an instance of TicToc. When it goes out of scope, it will be deleted from the stack and will display the elapsed time. </p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="p">{</span>
-</span><span class="line">    <span class="n">TicToc</span> <span class="n">t</span><span class="p">;</span>
-</span><span class="line">    <span class="n">someFunctionToProfile</span><span class="p">();</span>
-</span><span class="line">    <span class="n">perhapsSomethingElse</span><span class="p">();</span>
-</span><span class="line"><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Furthermore, other classes can be derived from this simple class, making this a really simple way to get stats on object lifetime.</p>
-
-<p>Enjoy and HAPPY NEW YEAR!</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1546,6 +1518,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/">Installing FFTW with homebrew for static linking in Matlab mex file</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/">Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab</a>
       </li>
     
@@ -1559,10 +1535,6 @@
     
       <li class="post">
         <a href="/blog/2013/01/29/bioaid-algo-2/">BioAid part 2: From auditory model to hearing aid algorithm</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/24/bioaid-algo/">BioAid part 1: Motivations for building a new class of hearing aid</a>
       </li>
     
   </ul>

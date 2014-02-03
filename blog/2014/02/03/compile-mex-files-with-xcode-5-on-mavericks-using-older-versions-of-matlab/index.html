@@ -132,7 +132,9 @@
   </header>
 
 
-<div class="entry-content"><p>So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab executables files as compiler related stuff has moved and version numbers have changed. Thankfully, the fix is relatively simple. Just locate mexopts.sh, which can be found in <code>~/your_old_matlab_version/mexopts.sh</code>, and open it with your favorite editor. Search for <code>maci64)</code> and then comment out everything related to the C compiler in this shell script block. This is probably everything from the line, <code>CC=...</code> to the line, <code>CXXDEBUGFLAGS=...</code> Now just prefix the commented block with this substitute.</p>
+<div class="entry-content"><p>So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab executables files as compiler related stuff has moved and version numbers have changed. Thankfully, the fix is relatively simple. I have tried this using 2011b (which is quite out of date now), but I’m guessing that this fix will work for most Matlab versions.</p>
+
+<p>Just locate mexopts.sh, which can be found in <code>~/.your_old_matlab_version/mexopts.sh</code>, and open it with your favorite editor. Search for <code>maci64)</code> and then comment out everything related to the C compiler in this shell script block. This is probably everything from the line, <code>CC=...</code> to the line, <code>CXXDEBUGFLAGS=...</code> Now just prefix the commented block with this substitute.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>mexopts.sh additions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -227,6 +229,8 @@
         <a class="basic-alignment left" href="/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/" title="Previous Post: Accurately measuring round-trip audio latency on iOS">&laquo; Accurately measuring round-trip audio latency on iOS</a>
       
       
+        <a class="basic-alignment right" href="/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/" title="Next Post: Installing FFTW with homebrew for static linking in Matlab mex file">Installing FFTW with homebrew for static linking in Matlab mex file &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -246,6 +250,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/">Installing FFTW with homebrew for static linking in Matlab mex file</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/">Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab</a>
       </li>
     
@@ -259,10 +267,6 @@
     
       <li class="post">
         <a href="/blog/2013/01/29/bioaid-algo-2/">BioAid part 2: From auditory model to hearing aid algorithm</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/24/bioaid-algo/">BioAid part 1: Motivations for building a new class of hearing aid</a>
       </li>
     
   </ul>

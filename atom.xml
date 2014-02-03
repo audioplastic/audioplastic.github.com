@@ -4,7 +4,7 @@
   <title><![CDATA[AudioPlastic]]></title>
   <link href="http://audioplastic.github.com/atom.xml" rel="self"/>
   <link href="http://audioplastic.github.com/"/>
-  <updated>2014-02-03T17:11:21+00:00</updated>
+  <updated>2014-02-03T19:50:51+00:00</updated>
   <id>http://audioplastic.github.com/</id>
   <author>
     <name><![CDATA[Nick Clark]]></name>
@@ -14,11 +14,56 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Installing FFTW with homebrew for static linking in Matlab mex file]]></title>
+    <link href="http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/"/>
+    <updated>2014-02-03T19:32:00+00:00</updated>
+    <id>http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file</id>
+    <content type="html"><![CDATA[<p>I’ve been playing with implementing and benchmarking various FFT implementations as Matlab mex files under OSX. I use the excellent <a href="http://brew.sh/">homebrew</a> as my package management system. I wanted to compare the vDSP FFT routines from the Apple Accelerate framework against FFTW3. Installing FFTW3 is as simple as typing <code>brew install fftw</code> from the command line. However, when linking fftw against the mex file, the mex tool will always want to dynamically link the library. Now it is possible to add <code>-static</code> to your linker flags in the <code>mexopts.sh</code> file (found in <code>~/.your_matlab_version/mexopts.sh</code>), but then this will then break the build if you try to include the Accelerate framework simultaneously. Hmmmm.</p>
+
+<p>Luckily, it is super easy to edit a brew formula. From the terminal, just type brew edit fftw. This brings up the formula details. From here it is possible to remove all of the dynamic linking options by just removing the flags in the <code>args</code> variable, so your formula ends up looking like this &#8230;</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>fftw formula</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">require <span class="s1">&#39;formula&#39;</span>
+</span><span class="line">
+</span><span class="line">class Fftw &lt; Formula
+</span><span class="line">  homepage <span class="s1">&#39;http://www.fftw.org&#39;</span>
+</span><span class="line">  url <span class="s1">&#39;http://www.fftw.org/fftw-3.3.3.tar.gz&#39;</span>
+</span><span class="line">  sha1 <span class="s1">&#39;11487180928d05746d431ebe7a176b52fe205cf9&#39;</span>
+</span><span class="line">
+</span><span class="line">  option <span class="s2">&quot;with-fortran&quot;</span>, <span class="s2">&quot;Enable Fortran bindings&quot;</span>
+</span><span class="line">
+</span><span class="line">  depends_on :fortran <span class="o">=</span>&gt; :optional
+</span><span class="line">
+</span><span class="line">  def install
+</span><span class="line">    <span class="nv">args</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class="line">	...
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>After removing and reinstalling fftw, matlab will automatically statically link it against the mex file. Perhaps not the most elegant solution, but a simple solution nonetheless. </p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab]]></title>
     <link href="http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/"/>
     <updated>2014-02-03T16:26:00+00:00</updated>
     <id>http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab</id>
-    <content type="html"><![CDATA[<p>So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab executables files as compiler related stuff has moved and version numbers have changed. Thankfully, the fix is relatively simple. Just locate mexopts.sh, which can be found in <code>~/your_old_matlab_version/mexopts.sh</code>, and open it with your favorite editor. Search for <code>maci64)</code> and then comment out everything related to the C compiler in this shell script block. This is probably everything from the line, <code>CC=...</code> to the line, <code>CXXDEBUGFLAGS=...</code> Now just prefix the commented block with this substitute.</p>
+    <content type="html"><![CDATA[<p>So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab executables files as compiler related stuff has moved and version numbers have changed. Thankfully, the fix is relatively simple. I have tried this using 2011b (which is quite out of date now), but I’m guessing that this fix will work for most Matlab versions.</p>
+
+<p>Just locate mexopts.sh, which can be found in <code>~/.your_old_matlab_version/mexopts.sh</code>, and open it with your favorite editor. Search for <code>maci64)</code> and then comment out everything related to the C compiler in this shell script block. This is probably everything from the line, <code>CC=...</code> to the line, <code>CXXDEBUGFLAGS=...</code> Now just prefix the commented block with this substitute.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>mexopts.sh additions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>

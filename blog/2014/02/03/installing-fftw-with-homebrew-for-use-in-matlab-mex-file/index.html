@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>C++11 is poetic - AudioPlastic</title>
+  <title>Installing FFTW with homebrew for static linking in Matlab mex file - AudioPlastic</title>
   <meta name="author" content="Nick Clark">
 
   
-  <meta name="description" content="I will start posting cool little blocks of code, like short poems when I see neat little things to do .. Find multiples in a vector the C++11 way1
-2 &hellip;">
+  <meta name="description" content="I’ve been playing with implementing and benchmarking various FFT implementations as Matlab mex files under OSX. I use the excellent homebrew as my &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://audioplastic.github.com/blog/2012/11/29/c-plus-plus-11-is-poetic/">
+  <link rel="canonical" href="http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -108,7 +107,7 @@
   
   <header>
     
-      <h1 class="entry-title">C++11 Is Poetic</h1>
+      <h1 class="entry-title">Installing FFTW With Homebrew for Static Linking in Matlab Mex File</h1>
     
     
       <p class="meta">
@@ -124,7 +123,7 @@
   
 
 
-<time datetime="2012-11-29T16:13:00+00:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
+<time datetime="2014-02-03T19:32:00+00:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -133,9 +132,11 @@
   </header>
 
 
-<div class="entry-content"><p>I will start posting cool little blocks of code, like short poems when I see neat little things to do ..</p>
+<div class="entry-content"><p>I’ve been playing with implementing and benchmarking various FFT implementations as Matlab mex files under OSX. I use the excellent <a href="http://brew.sh/">homebrew</a> as my package management system. I wanted to compare the vDSP FFT routines from the Apple Accelerate framework against FFTW3. Installing FFTW3 is as simple as typing <code>brew install fftw</code> from the command line. However, when linking fftw against the mex file, the mex tool will always want to dynamically link the library. Now it is possible to add <code>-static</code> to your linker flags in the <code>mexopts.sh</code> file (found in <code>~/.your_matlab_version/mexopts.sh</code>), but then this will then break the build if you try to include the Accelerate framework simultaneously. Hmmmm.</p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Find multiples in a vector the C++11 way</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<p>Luckily, it is super easy to edit a brew formula. From the terminal, just type brew edit fftw. This brings up the formula details. From here it is possible to remove all of the dynamic linking options by just removing the flags in the <code>args</code> variable, so your formula ends up looking like this &#8230;</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>fftw formula</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
@@ -149,25 +150,23 @@
 <span class="line-number">12</span>
 <span class="line-number">13</span>
 <span class="line-number">14</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include &lt;iostream&gt;</span>
-</span><span class="line"><span class="cp">#include &lt;vector&gt;</span>
-</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">require <span class="s1">&#39;formula&#39;</span>
 </span><span class="line">
-</span><span class="line"><span class="kt">int</span> <span class="n">main</span> <span class="p">()</span>
-</span><span class="line"><span class="p">{</span>
-</span><span class="line">	<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span><span class="mi">324</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">65</span><span class="p">,</span><span class="mi">787</span><span class="p">,</span><span class="mi">9</span><span class="p">};</span> <span class="c1">//Uniform initialization</span>
-</span><span class="line">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;In vector: &quot;</span><span class="p">;</span>
-</span><span class="line">	<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">val</span> <span class="o">:</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span><span class="p">;}</span> <span class="c1">//Range based for</span>
-</span><span class="line">	<span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span><span class="line">	<span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="s">&quot;there are &quot;</span>
-</span><span class="line">		<span class="o">&lt;&lt;</span> <span class="n">count_if</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[</span><span class="n">m</span><span class="p">](</span><span class="kt">int</span> <span class="n">i</span><span class="p">){</span><span class="k">return</span> <span class="n">i</span><span class="o">%</span><span class="n">m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;})</span> <span class="c1">//lambdas</span>
-</span><span class="line">		<span class="o">&lt;&lt;</span> <span class="s">&quot; multiples of &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class="line"><span class="p">}</span>
+</span><span class="line">class Fftw &lt; Formula
+</span><span class="line">  homepage <span class="s1">&#39;http://www.fftw.org&#39;</span>
+</span><span class="line">  url <span class="s1">&#39;http://www.fftw.org/fftw-3.3.3.tar.gz&#39;</span>
+</span><span class="line">  sha1 <span class="s1">&#39;11487180928d05746d431ebe7a176b52fe205cf9&#39;</span>
+</span><span class="line">
+</span><span class="line">  option <span class="s2">&quot;with-fortran&quot;</span>, <span class="s2">&quot;Enable Fortran bindings&quot;</span>
+</span><span class="line">
+</span><span class="line">  depends_on :fortran <span class="o">=</span>&gt; :optional
+</span><span class="line">
+</span><span class="line">  def install
+</span><span class="line">    <span class="nv">args</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class="line">	...
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<blockquote><p>In vector: 12, 324, 45, 65, 787, 9, there are 2 multiples of 5</p></blockquote>
-
-<p>For some more depth on the functional goodness see this <a href="http://www.drdobbs.com/cpp/efficient-use-of-lambda-expressions-and/232500059">Dr. Dobbs article</a></p>
+<p>After removing and reinstalling fftw, matlab will automatically statically link it against the mex file. Perhaps not the most elegant solution, but a simple solution nonetheless. </p>
 </div>
 
 
@@ -190,15 +189,21 @@
   
 
 
-<time datetime="2012-11-29T16:13:00+00:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
+<time datetime="2014-02-03T19:32:00+00:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/compilers/'>compilers</a>, <a class='category' href='/blog/categories/fft-/'>fft,</a>, <a class='category' href='/blog/categories/matlab-/'>matlab,</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.github.com/blog/2012/11/29/c-plus-plus-11-is-poetic/" data-via="audioplastic" data-counturl="http://audioplastic.github.com/blog/2012/11/29/c-plus-plus-11-is-poetic/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/" data-via="audioplastic" data-counturl="http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -211,10 +216,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2011/07/03/inkscape-logo/" title="Previous Post: Using inkscape vector graphics to generate a website logo">&laquo; Using inkscape vector graphics to generate a website logo</a>
+        <a class="basic-alignment left" href="/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/" title="Previous Post: Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab">&laquo; Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/11/30/c-plus-plus-palindrome-detection/" title="Next Post: C++ palindrome detection">C++ palindrome detection &raquo;</a>
       
     </p>
   </footer>
@@ -297,8 +300,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://audioplastic.github.com/blog/2012/11/29/c-plus-plus-11-is-poetic/';
-        var disqus_url = 'http://audioplastic.github.com/blog/2012/11/29/c-plus-plus-11-is-poetic/';
+        var disqus_identifier = 'http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/';
+        var disqus_url = 'http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/';
         var disqus_script = 'embed.js';
       
     (function () {

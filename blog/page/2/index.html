@@ -9,7 +9,7 @@
   <meta name="author" content="Nick Clark">
 
   
-  <meta name="description" content="An interesting question popped up on stackoverflow about palindrome detection in c++. A palindrome is a word whose characters can be reversed, and no &hellip;">
+  <meta name="description" content="I’ve always liked the ability to rapidly profile code snippets in Matlab using the ‘tic’ and ‘toc’ commands. I wanted to develop something equally as &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -104,6 +104,108 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii/">Matlab-like Profiling in C++ Using RAII</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-31T15:59:00+00:00" pubdate data-updated="true">Dec 31<span>st</span>, 2012</time>
+        
+         | <a href="/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I’ve always liked the ability to rapidly profile code snippets in Matlab using the ‘tic’ and ‘toc’ commands. I wanted to develop something equally as simple to use in C++ for rapid tests. It turns out that a particularly elegant way to do this is to use RAII techniques, allowing easy profiling of any commands within a scope. A time marker is made on construction, and another time marker is made on destruction, and then compared to the original time marker.</p>
+
+<p>The new ‘chrono’ classes bundles in the C++11 standard library make this task particularly simple. Below is the full class for simple tic toc type profiling …</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="c1">// TicToc RAII profiler</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">TicToc</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">private</span><span class="o">:</span>
+</span><span class="line">    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span> <span class="n">clock</span><span class="p">;</span>
+</span><span class="line">    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">microseconds</span> <span class="n">res</span><span class="p">;</span>
+</span><span class="line">    <span class="n">clock</span><span class="o">::</span><span class="n">time_point</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">    <span class="n">TicToc</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">t1</span> <span class="o">=</span> <span class="n">clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="o">~</span><span class="n">TicToc</span><span class="p">()</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="n">t2</span> <span class="o">=</span> <span class="n">clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+</span><span class="line">        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Elapsed time is &quot;</span>
+</span><span class="line">        <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration_cast</span><span class="o">&lt;</span><span class="n">res</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">).</span><span class="n">count</span><span class="p">()</span><span class="o">/</span><span class="mf">1e6</span>
+</span><span class="line">        <span class="o">&lt;&lt;</span> <span class="s">&quot; seconds.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Putting this to use is very simple. Just make a new scope using the scope resolution operator and create an instance of TicToc. When it goes out of scope, it will be deleted from the stack and will display the elapsed time. </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">TicToc</span> <span class="n">t</span><span class="p">;</span>
+</span><span class="line">    <span class="n">someFunctionToProfile</span><span class="p">();</span>
+</span><span class="line">    <span class="n">perhapsSomethingElse</span><span class="p">();</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Furthermore, other classes can be derived from this simple class, making this a really simple way to get stats on object lifetime.</p>
+
+<p>Enjoy and HAPPY NEW YEAR!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -501,6 +603,10 @@ p,h1,h2,div.content div {
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/">Installing FFTW with homebrew for static linking in Matlab mex file</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/">Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab</a>
       </li>
     
@@ -514,10 +620,6 @@ p,h1,h2,div.content div {
     
       <li class="post">
         <a href="/blog/2013/01/29/bioaid-algo-2/">BioAid part 2: From auditory model to hearing aid algorithm</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/24/bioaid-algo/">BioAid part 1: Motivations for building a new class of hearing aid</a>
       </li>
     
   </ul>

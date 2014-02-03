@@ -64,14 +64,20 @@
         <loc>
             http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/
         </loc>
-        <lastmod>2014-02-03T17:10:31+00:00</lastmod>
+        <lastmod>2014-02-03T19:43:09+00:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/
+        </loc>
+        <lastmod>2014-02-03T19:50:36+00:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/blog/archives/</loc>
-        <lastmod>2014-02-03T17:10:31+00:00</lastmod>
+        <lastmod>2014-02-03T19:50:36+00:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/</loc>
-        <lastmod>2014-02-03T17:10:31+00:00</lastmod>
+        <lastmod>2014-02-03T19:50:36+00:00</lastmod>
     </url>
 </urlset>
