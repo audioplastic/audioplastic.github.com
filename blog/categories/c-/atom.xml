@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: c++ | AudioPlastic]]></title>
+  <link href="http://audioplastic.github.com/blog/categories/c-/atom.xml" rel="self"/>
+  <link href="http://audioplastic.github.com/"/>
+  <updated>2014-03-04T19:57:47+01:00</updated>
+  <id>http://audioplastic.github.com/</id>
+  <author>
+    <name><![CDATA[Nick Clark]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[C++ palindrome detection at compile time]]></title>
+    <link href="http://audioplastic.github.com/blog/2014/03/04/c-plus-plus-palindrome-detection-at-compile-time/"/>
+    <updated>2014-03-04T19:37:00+01:00</updated>
+    <id>http://audioplastic.github.com/blog/2014/03/04/c-plus-plus-palindrome-detection-at-compile-time</id>
+    <content type="html"><![CDATA[<p>I made a <a href="http://audioplastic.org/blog/2012/11/30/c-plus-plus-palindrome-detection/">brief blog post</a> a couple of years ago showing how to do palindrome detection in C++ using a reverse itterator. I recently stumbled across a <a href="http://stackoverflow.com/questions/126756/examples-of-recursive-functions/127203#127203">recursive plaindrome detection algorithm on stack overflow</a>. The author explicitly noted that it would be more efficient to do palindrome detection using a loop, but then I thought this was an ideal candidate for compile-time evaluation using the nifty C++11 constexpr declaration.</p>
+
+<p>```c++
+constexpr bool compileTimeIsPalindrome(const char* s, int len)
+{
+    return len &lt; 2 ? true : s[0] == s[len-1] &amp;&amp; compileTimeIsPalindrome(&amp;s[1], len-2);
+}</p>
+
+<p>int main()
+{
+	static_assert( runtimeIsPalindrome((char *)”1991”, 4), “the only assertion” );
+}
+```</p>
+
+<p>No runtime overhead. Happy days.</p>
+]]></content>
+  </entry>
+  
+</feed>

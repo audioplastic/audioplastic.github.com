@@ -4,7 +4,7 @@
   <title><![CDATA[AudioPlastic]]></title>
   <link href="http://audioplastic.github.com/atom.xml" rel="self"/>
   <link href="http://audioplastic.github.com/"/>
-  <updated>2014-02-03T20:01:04+00:00</updated>
+  <updated>2014-03-04T19:57:47+01:00</updated>
   <id>http://audioplastic.github.com/</id>
   <author>
     <name><![CDATA[Nick Clark]]></name>
@@ -14,9 +14,40 @@
 
   
   <entry>
+    <title type="html"><![CDATA[C++ palindrome detection at compile time]]></title>
+    <link href="http://audioplastic.github.com/blog/2014/03/04/c-plus-plus-palindrome-detection-at-compile-time/"/>
+    <updated>2014-03-04T19:37:00+01:00</updated>
+    <id>http://audioplastic.github.com/blog/2014/03/04/c-plus-plus-palindrome-detection-at-compile-time</id>
+    <content type="html"><![CDATA[<p>I made a <a href="http://audioplastic.org/blog/2012/11/30/c-plus-plus-palindrome-detection/">brief blog post</a> a couple of years ago showing how to do palindrome detection in C++ using a reverse itterator. I recently stumbled across a <a href="http://stackoverflow.com/questions/126756/examples-of-recursive-functions/127203#127203">recursive plaindrome detection algorithm on stack overflow</a>. The author explicitly noted that it would be more efficient to do palindrome detection using a loop, but then I thought this was an ideal candidate for compile-time evaluation using the nifty C++11 constexpr declaration.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">constexpr</span> <span class="kt">bool</span> <span class="n">compileTimeIsPalindrome</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">len</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">s</span><span class="p">[</span><span class="n">len</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">compileTimeIsPalindrome</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">len</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">	<span class="n">static_assert</span><span class="p">(</span> <span class="n">runtimeIsPalindrome</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="s">&quot;1991&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s">&quot;the only assertion&quot;</span> <span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>No runtime overhead. Happy days.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Installing FFTW using homebrew on OSX when you want to statically link a Matlab mex file]]></title>
     <link href="http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/"/>
-    <updated>2014-02-03T19:32:00+00:00</updated>
+    <updated>2014-02-03T19:32:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file</id>
     <content type="html"><![CDATA[<p>I’ve been playing with implementing and benchmarking various FFT implementations as Matlab mex files under OSX. I use the excellent <a href="http://brew.sh/">homebrew</a> as my package management system. I wanted to compare the <a href="https://developer.apple.com/library/Mac/documentation/Performance/Conceptual/vDSP_Programming_Guide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40005147-CH1-SW1">vDSP FFT routines from the Apple Accelerate framework</a> against <a href="http://www.fftw.org">FFTW</a>. Installing FFTW is as simple as typing <code>brew install fftw</code> from the command line. However, when linking fftw against the mex file, the mex compiler tool in Matlab will always want to dynamically link the library (think version problems and other <a href="http://www.urbandictionary.com/define.php?term=PITA">P.I.T.A.</a>). Now it is possible to add <code>-static</code> to your linker flags in the <code>mexopts.sh</code> file (found in <code>~/.your_matlab_version/mexopts.sh</code>), but then this will then break the build if you try to include the Accelerate framework simultaneously (see <a href="http://audioplastic.org/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/">previous post</a>). Hmmmm.</p>
 
@@ -59,7 +90,7 @@
   <entry>
     <title type="html"><![CDATA[Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab]]></title>
     <link href="http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/"/>
-    <updated>2014-02-03T16:26:00+00:00</updated>
+    <updated>2014-02-03T16:26:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab</id>
     <content type="html"><![CDATA[<p>So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab executables files as compiler related stuff has moved and version numbers have changed. Thankfully, the fix is relatively simple. I have tried this using 2011b (which is quite out of date now), but I’m guessing that this fix will work for most Matlab versions.</p>
 
@@ -112,7 +143,7 @@
   <entry>
     <title type="html"><![CDATA[Accurately measuring round-trip audio latency on iOS]]></title>
     <link href="http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/"/>
-    <updated>2013-09-06T12:02:00+01:00</updated>
+    <updated>2013-09-06T12:02:00+02:00</updated>
     <id>http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios</id>
     <content type="html"><![CDATA[<p>Round-trip audio latency is the time taken for the sound to enter a real-time system, be processed by the hardware, and then be reproduced as a processed sound. This figure is particularly important for any application where a user interacts with sound in some way. For example, if you’re using software to simulate a guitar amplifier, you do not want to hear a delay between when you strike the strings, and when you are able to hear the processed output. Too much delay will mess up your performance. I work with assistive listening software that processes environmental sounds for hearing impaired listeners. Just like in the musical example, any delay in such a system will detract from the user experience.</p>
 
@@ -131,7 +162,7 @@
   <entry>
     <title type="html"><![CDATA[Introducing AUD-1 assistive listening software]]></title>
     <link href="http://audioplastic.github.com/blog/2013/08/22/introducing-aud1-assistive-listening-software/"/>
-    <updated>2013-08-22T00:54:00+01:00</updated>
+    <updated>2013-08-22T00:54:00+02:00</updated>
     <id>http://audioplastic.github.com/blog/2013/08/22/introducing-aud1-assistive-listening-software</id>
     <content type="html"><![CDATA[<p>This is just a brief post to announce that my latest assistive listening software, AUD-1, has just been accepted for release on the App Store. Check out <a href="http://www.aud1.com">aud1.com</a> for information related to the app.</p>
 
@@ -153,7 +184,7 @@
   <entry>
     <title type="html"><![CDATA[BioAid part 2: From auditory model to hearing aid algorithm]]></title>
     <link href="http://audioplastic.github.com/blog/2013/01/29/bioaid-algo-2/"/>
-    <updated>2013-01-29T14:54:00+00:00</updated>
+    <updated>2013-01-29T14:54:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2013/01/29/bioaid-algo-2</id>
     <content type="html"><![CDATA[<p>In a <a href="http://audioplastic.github.com/blog/2013/01/24/bioaid-algo/">previous blog post</a>, I introduced the BioAid project and discussed some of the motivations. I advise reading that post before reading this one. In this second installment, I aim to describe the algorithm architecture in technical detail and then discus some of its properties. This information is placed on my blog, allowing me to rapidly, and informally communicate some of the technical details related to the project while I gather thoughts in preparation for a more rigorous account.</p>
 
@@ -282,7 +313,7 @@
   <entry>
     <title type="html"><![CDATA[BioAid part 1: Motivations for building a new class of hearing aid]]></title>
     <link href="http://audioplastic.github.com/blog/2013/01/24/bioaid-algo/"/>
-    <updated>2013-01-24T14:48:00+00:00</updated>
+    <updated>2013-01-24T14:48:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2013/01/24/bioaid-algo</id>
     <content type="html"><![CDATA[<p>Just before Christmas, I submitted a free app (<a href="http://itunes.com/apps/nicholasclark">BioAid</a>) to the Apple iTunes Store that turns an iOS device into a hearing aid. It does this by taking the audio stream from the internal microphone, processing the audio in real time, and then playing the audio back over headphones connected to the device. For more general information on usage, please visit the <a href="http://bioaid.org.uk">main BioAid site</a>. This information is placed on my blog, allowing me to rapidly, and informally communicate some of the technical details related to the project while I gather thoughts in preparation for a more rigorous account. This is the first part of a series of posts that I intend to write about the project.</p>
 
@@ -349,7 +380,7 @@
   <entry>
     <title type="html"><![CDATA[Cobalt theme for Matlab]]></title>
     <link href="http://audioplastic.github.com/blog/2013/01/23/matlab-cobalt/"/>
-    <updated>2013-01-23T16:20:00+00:00</updated>
+    <updated>2013-01-23T16:20:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2013/01/23/matlab-cobalt</id>
     <content type="html"><![CDATA[<p>This is a quick post showing how to apply a cobalt-like theme to Matlab’s workspace and editor. Matlab has rather limited font and colour customization options compared to XCode (<a href="http://audioplastic.github.com/blog/2013/01/09/cobalt/">see my other post about the Cobalt theme</a>) but it is still possible to change the default theme to something that I personally find a little easier on the eyes.</p>
 
@@ -408,7 +439,7 @@
   <entry>
     <title type="html"><![CDATA[Audiophile AirPlay with Raspberry Pi: Part 1]]></title>
     <link href="http://audioplastic.github.com/blog/2013/01/10/AP1/"/>
-    <updated>2013-01-10T14:44:00+00:00</updated>
+    <updated>2013-01-10T14:44:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2013/01/10/AP1</id>
     <content type="html"><![CDATA[<p>I had recently been looking into purchasing an Apple TV for the purpose of streaming audio via AirPlay. I have little interest in the video side of things, so I started searching for a dedicated audio solution, hoping to find a high fidelity airplay receiver. Given that AirPlay data is transmitted using a lossless codec, the potential for super-high fidelity is unlimited. </p>
 
@@ -698,7 +729,7 @@
   <entry>
     <title type="html"><![CDATA[Cobalt theme for Xcode]]></title>
     <link href="http://audioplastic.github.com/blog/2013/01/09/cobalt/"/>
-    <updated>2013-01-09T12:23:00+00:00</updated>
+    <updated>2013-01-09T12:23:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2013/01/09/cobalt</id>
     <content type="html"><![CDATA[<p>I am very fond of the <a href="https://github.com/textmate/textmate">TextMate 2 open source editor</a>. I use it to write posts for this blog. I also really like the ‘cobalt’ text formatting theme that is included with TextMate.</p>
 
@@ -1005,7 +1036,7 @@
   <entry>
     <title type="html"><![CDATA[Basic Differential Equations Tutorial]]></title>
     <link href="http://audioplastic.github.com/blog/2013/01/07/diff-eqn1/"/>
-    <updated>2013-01-07T10:36:00+00:00</updated>
+    <updated>2013-01-07T10:36:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2013/01/07/diff-eqn1</id>
     <content type="html"><![CDATA[<p>This is a brief tutorial showing how to use differential equations to do make predictions about the state of a simple dynamic analogue electronics circuit. I have ported this post over from my discontinued Wordpress blog, as some readers may find the information useful. </p>
 
@@ -1128,7 +1159,7 @@
   <entry>
     <title type="html"><![CDATA[Matlab-like profiling in C++ using RAII]]></title>
     <link href="http://audioplastic.github.com/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii/"/>
-    <updated>2012-12-31T15:59:00+00:00</updated>
+    <updated>2012-12-31T15:59:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii</id>
     <content type="html"><![CDATA[<p>I’ve always liked the ability to rapidly profile code snippets in Matlab using the ‘tic’ and ‘toc’ commands. I wanted to develop something equally as simple to use in C++ for rapid tests. It turns out that a particularly elegant way to do this is to use RAII techniques, allowing easy profiling of any commands within a scope. A time marker is made on construction, and another time marker is made on destruction, and then compared to the original time marker.</p>
 
@@ -1201,7 +1232,7 @@
   <entry>
     <title type="html"><![CDATA[C++ palindrome detection]]></title>
     <link href="http://audioplastic.github.com/blog/2012/11/30/c-plus-plus-palindrome-detection/"/>
-    <updated>2012-11-30T16:11:00+00:00</updated>
+    <updated>2012-11-30T16:11:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2012/11/30/c-plus-plus-palindrome-detection</id>
     <content type="html"><![CDATA[<p>An interesting question popped up on stackoverflow about palindrome detection in c++. A palindrome is a word whose characters can be reversed, and no change is detectable, e.g. “racecar”. My initial thought was to make a copy and use the std::reverse algorithm &#8230; </p>
 
@@ -1252,7 +1283,7 @@
   <entry>
     <title type="html"><![CDATA[C++11 is poetic]]></title>
     <link href="http://audioplastic.github.com/blog/2012/11/29/c-plus-plus-11-is-poetic/"/>
-    <updated>2012-11-29T16:13:00+00:00</updated>
+    <updated>2012-11-29T16:13:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2012/11/29/c-plus-plus-11-is-poetic</id>
     <content type="html"><![CDATA[<p>I will start posting cool little blocks of code, like short poems when I see neat little things to do ..</p>
 
@@ -1295,7 +1326,7 @@
   <entry>
     <title type="html"><![CDATA[Using inkscape vector graphics to generate a website logo]]></title>
     <link href="http://audioplastic.github.com/blog/2011/07/03/inkscape-logo/"/>
-    <updated>2011-07-03T00:00:00+01:00</updated>
+    <updated>2011-07-03T00:00:00+02:00</updated>
     <id>http://audioplastic.github.com/blog/2011/07/03/inkscape-logo</id>
     <content type="html"><![CDATA[<h2 id="using-inkscape-vector-graphics-to-generate-a-website-logo">Using inkscape vector graphics to generate a website logo</h2>
 
@@ -1412,7 +1443,7 @@
   <entry>
     <title type="html"><![CDATA[The Matlab publishing tool and Jekyll combined]]></title>
     <link href="http://audioplastic.github.com/blog/2011/07/02/matlab-publish-and-jekyll/"/>
-    <updated>2011-07-02T00:00:00+01:00</updated>
+    <updated>2011-07-02T00:00:00+02:00</updated>
     <id>http://audioplastic.github.com/blog/2011/07/02/matlab-publish-and-jekyll</id>
     <content type="html"><![CDATA[<h2 id="the-matlab-publishing-tool-and-jekyll-combined">The Matlab publishing tool and Jekyll combined</h2>
 

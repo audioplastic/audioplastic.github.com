@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Introducing AUD-1 assistive listening software - AudioPlastic</title>
+  <title>C++ palindrome detection at compile time - AudioPlastic</title>
   <meta name="author" content="Nick Clark">
 
   
-  <meta name="description" content="This is just a brief post to announce that my latest assistive listening software, AUD-1, has just been accepted for release on the App Store. Check &hellip;">
+  <meta name="description" content="I made a brief blog post a couple of years ago showing how to do palindrome detection in C++ using a reverse itterator. I recently stumbled across a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://audioplastic.github.com/blog/2013/08/22/introducing-aud1-assistive-listening-software/">
+  <link rel="canonical" href="http://audioplastic.github.com/blog/2014/03/04/c-plus-plus-palindrome-detection-at-compile-time/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -107,7 +107,7 @@
   
   <header>
     
-      <h1 class="entry-title">Introducing AUD-1 Assistive Listening Software</h1>
+      <h1 class="entry-title">C++ Palindrome Detection at Compile Time</h1>
     
     
       <p class="meta">
@@ -123,7 +123,7 @@
   
 
 
-<time datetime="2013-08-22T00:54:00+02:00" pubdate data-updated="true">Aug 22<span>nd</span>, 2013</time>
+<time datetime="2014-03-04T19:37:00+01:00" pubdate data-updated="true">Mar 4<span>th</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -132,20 +132,29 @@
   </header>
 
 
-<div class="entry-content"><p>This is just a brief post to announce that my latest assistive listening software, AUD-1, has just been accepted for release on the App Store. Check out <a href="http://www.aud1.com">aud1.com</a> for information related to the app.</p>
+<div class="entry-content"><p>I made a <a href="http://audioplastic.org/blog/2012/11/30/c-plus-plus-palindrome-detection/">brief blog post</a> a couple of years ago showing how to do palindrome detection in C++ using a reverse itterator. I recently stumbled across a <a href="http://stackoverflow.com/questions/126756/examples-of-recursive-functions/127203#127203">recursive plaindrome detection algorithm on stack overflow</a>. The author explicitly noted that it would be more efficient to do palindrome detection using a loop, but then I thought this was an ideal candidate for compile-time evaluation using the nifty C++11 constexpr declaration.</p>
 
-<p>The app basically turns any iOS device into a hearing aid. It is built on the same core algorithm as the original BioAid app project described in other posts on this blog, but includes numerous enhancements suggested by the user community including, but not limited to:</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">constexpr</span> <span class="kt">bool</span> <span class="n">compileTimeIsPalindrome</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">len</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">s</span><span class="p">[</span><span class="n">len</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">compileTimeIsPalindrome</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">len</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">	<span class="n">static_assert</span><span class="p">(</span> <span class="n">runtimeIsPalindrome</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="s">&quot;1991&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s">&quot;the only assertion&quot;</span> <span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<ul>
-  <li>Dual algorithm technology, allowing settings for each ear to be adjusted independently.</li>
-  <li>Advanced connectivity options, allowing use of high quality audio peripherals to improve sound quality. </li>
-  <li>Stereo linkage technology to preserve spatial cues when the app is used with stereo input hardware.</li>
-  <li>Fine grain control over the dynamic range of the processed sound.</li>
-  <li>High optimization for extremely low processing delay.</li>
-  <li>Automatic storage of preferred settings, even if the device runs out of power.</li>
-  <li>Adjustable input and output gain controls to fully utilize the dynamic range of the device.</li>
-  <li>Detection of accidental removal of headphones, preventing annoying feedback in public places.</li>
-</ul>
+<p>No runtime overhead. Happy days.</p>
 </div>
 
 
@@ -168,15 +177,21 @@
   
 
 
-<time datetime="2013-08-22T00:54:00+02:00" pubdate data-updated="true">Aug 22<span>nd</span>, 2013</time>
+<time datetime="2014-03-04T19:37:00+01:00" pubdate data-updated="true">Mar 4<span>th</span>, 2014</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/c-/'>c++</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.github.com/blog/2013/08/22/introducing-aud1-assistive-listening-software/" data-via="audioplastic" data-counturl="http://audioplastic.github.com/blog/2013/08/22/introducing-aud1-assistive-listening-software/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://audioplastic.github.com/blog/2014/03/04/c-plus-plus-palindrome-detection-at-compile-time/" data-via="audioplastic" data-counturl="http://audioplastic.github.com/blog/2014/03/04/c-plus-plus-palindrome-detection-at-compile-time/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -189,10 +204,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/01/29/bioaid-algo-2/" title="Previous Post: BioAid part 2: From auditory model to hearing aid algorithm">&laquo; BioAid part 2: From auditory model to hearing aid algorithm</a>
+        <a class="basic-alignment left" href="/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/" title="Previous Post: Installing FFTW using homebrew on OSX when you want to statically link a Matlab mex file">&laquo; Installing FFTW using homebrew on OSX when you want to statically link a Matlab mex file</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/" title="Next Post: Accurately measuring round-trip audio latency on iOS">Accurately measuring round-trip audio latency on iOS &raquo;</a>
       
     </p>
   </footer>
@@ -275,8 +288,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://audioplastic.github.com/blog/2013/08/22/introducing-aud1-assistive-listening-software/';
-        var disqus_url = 'http://audioplastic.github.com/blog/2013/08/22/introducing-aud1-assistive-listening-software/';
+        var disqus_identifier = 'http://audioplastic.github.com/blog/2014/03/04/c-plus-plus-palindrome-detection-at-compile-time/';
+        var disqus_url = 'http://audioplastic.github.com/blog/2014/03/04/c-plus-plus-palindrome-detection-at-compile-time/';
         var disqus_script = 'embed.js';
       
     (function () {
