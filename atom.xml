@@ -4,7 +4,7 @@
   <title><![CDATA[AudioPlastic]]></title>
   <link href="http://audioplastic.github.com/atom.xml" rel="self"/>
   <link href="http://audioplastic.github.com/"/>
-  <updated>2014-03-04T19:57:47+01:00</updated>
+  <updated>2014-03-04T20:06:40+01:00</updated>
   <id>http://audioplastic.github.com/</id>
   <author>
     <name><![CDATA[Nick Clark]]></name>
@@ -36,7 +36,7 @@
 </span><span class="line">
 </span><span class="line"><span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
 </span><span class="line"><span class="p">{</span>
-</span><span class="line">	<span class="n">static_assert</span><span class="p">(</span> <span class="n">runtimeIsPalindrome</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="s">&quot;1991&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s">&quot;the only assertion&quot;</span> <span class="p">);</span>
+</span><span class="line">	<span class="n">static_assert</span><span class="p">(</span> <span class="n">compileTimeIsPalindrome</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="s">&quot;1991&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s">&quot;the only assertion&quot;</span> <span class="p">);</span>
 </span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 

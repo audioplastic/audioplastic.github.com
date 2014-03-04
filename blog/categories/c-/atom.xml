@@ -4,7 +4,7 @@
   <title><![CDATA[Category: c++ | AudioPlastic]]></title>
   <link href="http://audioplastic.github.com/blog/categories/c-/atom.xml" rel="self"/>
   <link href="http://audioplastic.github.com/"/>
-  <updated>2014-03-04T19:57:47+01:00</updated>
+  <updated>2014-03-04T20:06:40+01:00</updated>
   <id>http://audioplastic.github.com/</id>
   <author>
     <name><![CDATA[Nick Clark]]></name>
@@ -28,7 +28,7 @@ constexpr bool compileTimeIsPalindrome(const char* s, int len)
 
 <p>int main()
 {
-	static_assert( runtimeIsPalindrome((char *)”1991”, 4), “the only assertion” );
+	static_assert( compileTimeIsPalindrome((char *)”1991”, 4), “the only assertion” );
 }
 ```</p>
 
