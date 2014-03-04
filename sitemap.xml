@@ -2,82 +2,88 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://audioplastic.github.com/blog/2011/07/02/matlab-publish-and-jekyll/</loc>
-        <lastmod>2013-01-24T14:47:07+00:00</lastmod>
+        <lastmod>2013-01-24T15:47:07+01:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/blog/2011/07/03/inkscape-logo/</loc>
-        <lastmod>2013-01-24T14:47:07+00:00</lastmod>
+        <lastmod>2013-01-24T15:47:07+01:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/blog/2012/11/29/c-plus-plus-11-is-poetic/</loc>
-        <lastmod>2013-01-24T14:47:07+00:00</lastmod>
+        <lastmod>2013-01-24T15:47:07+01:00</lastmod>
     </url>
     <url>
         <loc>
             http://audioplastic.github.com/blog/2012/11/30/c-plus-plus-palindrome-detection/
         </loc>
-        <lastmod>2013-01-24T14:47:07+00:00</lastmod>
+        <lastmod>2013-01-24T15:47:07+01:00</lastmod>
     </url>
     <url>
         <loc>
             http://audioplastic.github.com/blog/2012/12/31/matlab-like-profiling-in-c-plus-plus-using-raii/
         </loc>
-        <lastmod>2013-01-24T14:47:07+00:00</lastmod>
+        <lastmod>2013-01-24T15:47:07+01:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/blog/2013/01/07/diff-eqn1/</loc>
-        <lastmod>2013-01-24T14:47:07+00:00</lastmod>
+        <lastmod>2013-01-24T15:47:07+01:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/blog/2013/01/09/cobalt/</loc>
-        <lastmod>2013-01-24T14:47:07+00:00</lastmod>
+        <lastmod>2013-01-24T15:47:07+01:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/blog/2013/01/10/AP1/</loc>
-        <lastmod>2013-08-22T01:22:56+01:00</lastmod>
+        <lastmod>2013-08-22T02:22:56+02:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/blog/2013/01/23/matlab-cobalt/</loc>
-        <lastmod>2013-01-24T14:47:07+00:00</lastmod>
+        <lastmod>2013-01-24T15:47:07+01:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/blog/2013/01/24/bioaid-algo/</loc>
-        <lastmod>2013-02-05T15:13:46+00:00</lastmod>
+        <lastmod>2013-02-05T16:13:46+01:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/blog/2013/01/29/bioaid-algo-2/</loc>
-        <lastmod>2013-02-05T18:34:17+00:00</lastmod>
+        <lastmod>2013-02-05T19:34:17+01:00</lastmod>
     </url>
     <url>
         <loc>
             http://audioplastic.github.com/blog/2013/08/22/introducing-aud1-assistive-listening-software/
         </loc>
-        <lastmod>2013-08-28T17:19:45+01:00</lastmod>
+        <lastmod>2013-08-28T18:19:45+02:00</lastmod>
     </url>
     <url>
         <loc>
             http://audioplastic.github.com/blog/2013/09/06/measuring-round-trip-audio-latency-on-ios/
         </loc>
-        <lastmod>2013-09-06T12:44:14+01:00</lastmod>
+        <lastmod>2013-09-06T13:44:14+02:00</lastmod>
     </url>
     <url>
         <loc>
             http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/
         </loc>
-        <lastmod>2014-02-03T19:43:09+00:00</lastmod>
+        <lastmod>2014-02-03T20:43:09+01:00</lastmod>
     </url>
     <url>
         <loc>
             http://audioplastic.github.com/blog/2014/02/03/installing-fftw-with-homebrew-for-use-in-matlab-mex-file/
         </loc>
-        <lastmod>2014-02-03T20:00:54+00:00</lastmod>
+        <lastmod>2014-02-03T21:00:54+01:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://audioplastic.github.com/blog/2014/03/04/c-plus-plus-palindrome-detection-at-compile-time/
+        </loc>
+        <lastmod>2014-03-04T19:49:38+01:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/blog/archives/</loc>
-        <lastmod>2014-02-03T20:00:54+00:00</lastmod>
+        <lastmod>2014-03-04T19:49:38+01:00</lastmod>
     </url>
     <url>
         <loc>http://audioplastic.github.com/</loc>
-        <lastmod>2014-02-03T20:00:54+00:00</lastmod>
+        <lastmod>2014-03-04T19:49:38+01:00</lastmod>
     </url>
 </urlset>

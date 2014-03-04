@@ -4,7 +4,7 @@
   <title><![CDATA[Category: complier, | AudioPlastic]]></title>
   <link href="http://audioplastic.github.com/blog/categories/complier-/atom.xml" rel="self"/>
   <link href="http://audioplastic.github.com/"/>
-  <updated>2014-02-03T20:01:04+00:00</updated>
+  <updated>2014-03-04T19:49:48+01:00</updated>
   <id>http://audioplastic.github.com/</id>
   <author>
     <name><![CDATA[Nick Clark]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Compile mex files with XCode 5 on OSX Mavericks using older versions of Matlab]]></title>
     <link href="http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab/"/>
-    <updated>2014-02-03T16:26:00+00:00</updated>
+    <updated>2014-02-03T16:26:00+01:00</updated>
     <id>http://audioplastic.github.com/blog/2014/02/03/compile-mex-files-with-xcode-5-on-mavericks-using-older-versions-of-matlab</id>
     <content type="html"><![CDATA[<p>So, you’ve upgraded OSX to the latest version and also upgraded XCode to 5.X. You’ll find that the Matlab mex command now fails to build your Matlab executables files as compiler related stuff has moved and version numbers have changed. Thankfully, the fix is relatively simple. I have tried this using 2011b (which is quite out of date now), but I’m guessing that this fix will work for most Matlab versions.</p>
 
